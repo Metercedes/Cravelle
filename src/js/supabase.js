@@ -1,44 +1,36 @@
-import { createClient } from '@supabase/supabase-js';
+// supabase.js
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+// Replace with your Supabase project URL and anon key
+const SUPABASE_URL = 'https://your-project.supabase.co';
+const SUPABASE_ANON_KEY = 'your-anon-key';
 
-let supabase;
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-if (SUPABASE_URL && SUPABASE_ANON_KEY) {
-  supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-    auth: {
-      flowType: 'pkce',
-      detectSessionFromUrl: true,
-      autoRefreshToken: true,
-      persistSession: true
+async function supabaseLogin(email, password) {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+        alert('Login failed: ' + error.message);
+    } else {
+        alert('Login successful!');
+        // Redirect or update UI
     }
-  });
-} else {
-  console.warn('[Supabase] Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY env vars. Auth features disabled.');
-  // Provide a stub so imports don't crash
-  supabase = {
-    auth: {
-      getSession: async () => ({ data: { session: null } }),
-      getUser: async () => ({ data: { user: null } }),
-      signUp: async () => { throw new Error('Supabase not configured'); },
-      signInWithPassword: async () => { throw new Error('Supabase not configured'); },
-      signOut: async () => {},
-      resetPasswordForEmail: async () => { throw new Error('Supabase not configured'); },
-      exchangeCodeForSession: async () => ({ data: { session: null }, error: { message: 'Supabase not configured' } }),
-      onAuthStateChange: (cb) => { setTimeout(() => cb('INITIAL_SESSION', null), 0); return { data: { subscription: { unsubscribe: () => {} } } }; },
-      mfa: {
-        enroll: async () => { throw new Error('Supabase not configured'); },
-        challenge: async () => { throw new Error('Supabase not configured'); },
-        verify: async () => { throw new Error('Supabase not configured'); },
-        listFactors: async () => ({ data: [], error: null }),
-      }
-    },
-    from: () => ({
-      select: () => ({ eq: () => ({ single: async () => ({ data: null, error: null }), order: async () => ({ data: [], error: null }) }) }),
-    }),
-    channel: () => ({ on: function() { return this; }, subscribe: () => {} }),
-  };
 }
 
-export { supabase };
+async function supabaseRegister(email, password) {
+    const { error } = await supabase.auth.signUp({ email, password });
+    if (error) {
+        alert('Registration failed: ' + error.message);
+    } else {
+        alert('Registration successful!');
+        // Redirect or update UI
+    }
+}
+
+async function supabaseResetPassword(email) {
+    const { error } = await supabase.auth.resetPasswordForEmail(email);
+    if (error) {
+        alert('Reset failed: ' + error.message);
+    } else {
+        alert('Password reset email sent!');
+    }
+}
