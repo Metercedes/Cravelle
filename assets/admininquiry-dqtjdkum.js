@@ -1,0 +1,1 @@
+import"./nav-island-BrOB2DAv.js";import{i}from"./service-page-init-DTfnkQHp.js";import{i as r}from"./inquiry-form-jovLcs_o.js";import"./i18n-D-pGM_pZ.js";try{await i()}catch(a){}r("adminInquiryForm","admin");

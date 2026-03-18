@@ -1,0 +1,1 @@
+function e(e){if(!e||"string"!=typeof e)return"Email is required.";const t=e.trim();return t.length>254?"Email is too long.":/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t)?null:"Please enter a valid email address."}export{e as v};
