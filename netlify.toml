@@ -23,13 +23,6 @@
 [build.processing.images]
   compress = true
 
-# Quarantine archive content even if it ends up under the deployed publish path.
-[[redirects]]
-  from = "/_archive/*"
-  to = "/404"
-  status = 404
-  force = true
-
 # Single-page app fallback for client-side routing
 [[redirects]]
   from = "/*"

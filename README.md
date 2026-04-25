@@ -52,8 +52,6 @@ tailwind.config.ts      design tokens (palette, typography, fluid type)
 vite.config.ts          Vite config with manual chunking
 netlify.toml            Netlify build, redirects, SPA rewrite
 public/_headers         security headers + cache-control
-_archive/legacy-site/   the previous deployed bundle, kept for reference
-_archive/AUDIT.md       what changed and why
 ```
 
 ## Content
@@ -114,4 +112,3 @@ Confirmed against the official KRS Aktualny / Pełny export (April 2026):
 - Main PKD: 62.90.Z
 - e-Doręczenia: AE:PL-62782-70144-UJEAF-20
 
-See `_archive/AUDIT.md` for the full rebrand and rebuild notes.
