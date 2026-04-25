@@ -23,25 +23,11 @@
 [build.processing.images]
   compress = true
 
-# Force HTTP → HTTPS
-[[redirects]]
-  from = "http://*"
-  to = "https://:splat"
-  status = 301
-  force = true
-
 # Quarantine archive content even if it ends up under the deployed publish path.
 [[redirects]]
   from = "/_archive/*"
   to = "/404"
   status = 404
-  force = true
-
-# Block access via the netlify.app subdomain; canonicalise to cravelle.co
-[[redirects]]
-  from = "https://*.netlify.app/*"
-  to = "https://cravelle.co/:splat"
-  status = 301
   force = true
 
 # Single-page app fallback for client-side routing
