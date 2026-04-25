@@ -1,1 +1,14 @@
 node_modules
+dist
+.DS_Store
+.env
+.env.*
+!.env.example
+.netlify
+.vite
+*.log
+coverage
+.idea
+.vscode
+.tsbuild-node
+*.tsbuildinfo

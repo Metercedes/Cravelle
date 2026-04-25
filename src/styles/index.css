@@ -1,0 +1,249 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: #f6f1e8;
+    --bg-soft: #ece7dd;
+    --bg-elev: #ffffff;
+    --fg: #1c2228;
+    --fg-soft: #3e4348;
+    --fg-mute: #6e6f70;
+    --rule: rgba(28, 34, 40, 0.14);
+    --rule-soft: rgba(28, 34, 40, 0.08);
+    --accent: #244c5a;
+    --brass: #b88a55;
+    --signal: #5e7a66;
+    --route: #a8a29a;
+    --selection-bg: #244c5a;
+    --selection-fg: #f6f1e8;
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #080a0d;
+    --bg-soft: #10151a;
+    --bg-elev: #141a20;
+    --fg: #f6f1e8;
+    --fg-soft: #d8d2c7;
+    --fg-mute: #a8a29a;
+    --rule: rgba(246, 241, 232, 0.14);
+    --rule-soft: rgba(246, 241, 232, 0.06);
+    --accent: #5e8fa1;
+    --brass: #cda071;
+    --signal: #7a967f;
+    --route: #6e6f70;
+    --selection-bg: #b88a55;
+    --selection-fg: #080a0d;
+  }
+
+  html {
+    background: var(--bg);
+    color: var(--fg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--selection-bg);
+    color: var(--selection-fg);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Fraunces", ui-serif, Georgia, serif;
+    font-weight: 400;
+    color: var(--fg);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Skip link */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+    padding: 0.75rem 1rem;
+    background: var(--accent);
+    color: #f6f1e8;
+    font-size: 0.875rem;
+    text-decoration: none;
+  }
+  .skip-link:focus {
+    left: 1rem;
+    top: 1rem;
+    outline: 2px solid var(--brass);
+    outline-offset: 2px;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Focus styles */
+  :focus-visible {
+    outline: 2px solid var(--brass);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  /* Hide focus on mouse */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Form reset */
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  /* Image defaults */
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--bg-soft);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--route);
+    border-radius: 0;
+  }
+}
+
+@layer components {
+  .container-edge {
+    @apply mx-auto w-full max-w-[1320px] px-5 sm:px-6 lg:px-10;
+  }
+
+  .eyebrow {
+    @apply font-mono text-[0.7rem] uppercase tracking-[0.18em] text-[color:var(--fg-mute)];
+  }
+
+  .rule {
+    height: 1px;
+    background: var(--rule);
+    width: 100%;
+    transform-origin: left center;
+  }
+
+  .rule-soft {
+    height: 1px;
+    background: var(--rule-soft);
+    width: 100%;
+  }
+
+  .hairline-x {
+    background-image: linear-gradient(to right, var(--rule) 50%, transparent 50%);
+    background-size: 8px 1px;
+    background-repeat: repeat-x;
+    background-position: 0 50%;
+    height: 1px;
+  }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, var(--rule-soft) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--rule-soft) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  .corner-mark {
+    @apply absolute font-mono text-[0.65rem] uppercase tracking-[0.2em] text-[color:var(--fg-mute)];
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-3 bg-[color:var(--fg)] px-6 py-3 text-sm font-medium tracking-wide text-[color:var(--bg)] transition-colors duration-200 hover:bg-[color:var(--accent)] focus-visible:bg-[color:var(--accent)];
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-3 border border-[color:var(--rule)] bg-transparent px-6 py-3 text-sm font-medium tracking-wide text-[color:var(--fg)] transition-colors duration-200 hover:border-[color:var(--fg)] hover:bg-[color:var(--bg-soft)];
+  }
+
+  .btn-link {
+    @apply inline-flex items-center gap-2 text-sm font-medium text-[color:var(--fg)] underline decoration-[color:var(--rule)] decoration-1 underline-offset-[6px] transition-colors hover:decoration-[color:var(--brass)];
+  }
+
+  .editorial-num {
+    @apply font-mono text-[0.7rem] uppercase tracking-[0.18em] text-[color:var(--fg-mute)];
+  }
+
+  .arrow-after::after {
+    content: "→";
+    margin-left: 0.5rem;
+    transform: translateX(0);
+    transition: transform 0.2s ease;
+    display: inline-block;
+  }
+  .arrow-after:hover::after {
+    transform: translateX(4px);
+  }
+
+  .field {
+    @apply block w-full appearance-none border border-[color:var(--rule)] bg-transparent px-4 py-3 text-[15px] text-[color:var(--fg)] outline-none transition-colors placeholder:text-[color:var(--fg-mute)] focus:border-[color:var(--accent)];
+  }
+
+  .field-label {
+    @apply mb-2 block font-mono text-[0.7rem] uppercase tracking-[0.18em] text-[color:var(--fg-mute)];
+  }
+}
+
+@layer utilities {
+  .text-fg {
+    color: var(--fg);
+  }
+  .text-fg-soft {
+    color: var(--fg-soft);
+  }
+  .text-fg-mute {
+    color: var(--fg-mute);
+  }
+  .bg-bg {
+    background-color: var(--bg);
+  }
+  .bg-bg-soft {
+    background-color: var(--bg-soft);
+  }
+  .border-rule {
+    border-color: var(--rule);
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}

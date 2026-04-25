@@ -1,0 +1,80 @@
+import { m as motion, useReducedMotion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { sectors } from "../content/site";
+import Disclaimer from "../components/Disclaimer";
+import CTASection from "../components/CTASection";
+import { useSeo } from "../lib/seo";
+
+export default function Sectors() {
+  const reduce = useReducedMotion();
+  useSeo({
+    title: "Sectors, Cravelle",
+    description:
+      "Cravelle works in narrow, practical sectors: fruits, vegetables, fresh produce, agricultural products, and selected hospitality commercial partnerships.",
+    path: "/sectors",
+  });
+
+  return (
+    <>
+      <section className="border-b border-[color:var(--rule)] pt-32 md:pt-40">
+        <div className="container-edge">
+          <div className="flex items-center justify-between font-mono text-[0.7rem] uppercase tracking-[0.2em] text-[color:var(--fg-mute)]">
+            <span>Sectors</span>
+            <span>{sectors.length} categories</span>
+          </div>
+          <div className="hairline-x mt-2" />
+          <h1 className="mt-12 max-w-4xl font-serif text-display-xl">
+            Narrow sectors. Real commercial knowledge.
+          </h1>
+          <p className="mt-8 max-w-2xl text-[1.05rem] leading-[1.6] text-[color:var(--fg-soft)]">
+            Cravelle stays focused on a small set of categories where Egypt and the wider
+            Arabic-speaking market have credible supply, and where European buyers have real demand.
+          </p>
+        </div>
+      </section>
+
+      <section className="container-edge py-20 md:py-28">
+        <ul className="grid gap-px overflow-hidden border-l border-t border-[color:var(--rule)] md:grid-cols-2">
+          {sectors.map((s, i) => (
+            <motion.li
+              key={s.id}
+              initial={reduce ? false : { opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.5, delay: Math.min(i * 0.05, 0.2), ease: [0.22, 0.61, 0.36, 1] }}
+              className="border-b border-r border-[color:var(--rule)] bg-[color:var(--bg)] p-7 md:p-10 md:last:col-span-2"
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[0.7rem] tracking-[0.18em] text-[color:var(--brass)]">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+              </div>
+              <h2 className="mt-5 font-serif text-[1.55rem] leading-[1.2] tracking-[-0.01em] md:text-[1.75rem]">
+                {s.title}
+              </h2>
+              <p className="mt-3 max-w-prose text-[15px] leading-[1.65] text-[color:var(--fg-soft)]">
+                {s.note}
+              </p>
+            </motion.li>
+          ))}
+        </ul>
+
+        <div className="mt-14 flex flex-wrap items-center gap-4">
+          <Link to="/contact" className="btn-primary">
+            Discuss a sector brief
+            <span aria-hidden>→</span>
+          </Link>
+          <Link to="/services" className="btn-ghost">
+            See the services
+          </Link>
+        </div>
+
+        <div className="mt-16">
+          <Disclaimer />
+        </div>
+      </section>
+
+      <CTASection />
+    </>
+  );
+}

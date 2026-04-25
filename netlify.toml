@@ -1,16 +1,10 @@
 [build]
   publish = "dist"
   command = "npm run build"
-  functions = "netlify/functions"
 
 [build.environment]
   NODE_VERSION = "20.19.0"
 
-# Netlify Forms configuration
-[forms]
-  # This matches the form name in the HTML (name="contact")
-
-# Asset optimization
 [build.processing]
   skip_processing = false
 
@@ -28,67 +22,26 @@
 [build.processing.images]
   compress = true
 
-# Force HTTP to HTTPS
+# Force HTTP → HTTPS
 [[redirects]]
   from = "http://*"
   to = "https://:splat"
   status = 301
   force = true
 
-# Redirect netlify.app subdomain to custom domain (block direct access)
+# Block access via the netlify.app subdomain; canonicalise to cravelle.co
 [[redirects]]
   from = "https://*.netlify.app/*"
   to = "https://cravelle.co/:splat"
   status = 301
   force = true
 
-# Netlify Functions API routes
+# Single-page app fallback for client-side routing
 [[redirects]]
-  from = "/api/admin-action"
-  to = "/.netlify/functions/admin-action"
+  from = "/*"
+  to = "/index.html"
   status = 200
 
-[[redirects]]
-  from = "/api/submit-trade-lead"
-  to = "/.netlify/functions/submit-trade-lead"
-  status = 200
-
-[[redirects]]
-  from = "/api/submit-inquiry"
-  to = "/.netlify/functions/submit-inquiry"
-  status = 200
-
-[[redirects]]
-  from = "/api/manage-users"
-  to = "/.netlify/functions/manage-users"
-  status = 200
-
-[[redirects]]
-  from = "/api/update-request-status"
-  to = "/.netlify/functions/update-request-status"
-  status = 200
-
-[[redirects]]
-  from = "/api/user-dashboard"
-  to = "/.netlify/functions/user-dashboard"
-  status = 200
-
-[[redirects]]
-  from = "/api/setup-totp"
-  to = "/.netlify/functions/setup-totp"
-  status = 200
-
-[[redirects]]
-  from = "/api/verify-totp"
-  to = "/.netlify/functions/verify-totp"
-  status = 200
-
-[[redirects]]
-  from = "/api/verify-turnstile"
-  to = "/.netlify/functions/verify-turnstile"
-  status = 200
-
-# Dev server configuration
 [dev]
   command = "npm run dev"
   port = 3000
