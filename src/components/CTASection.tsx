@@ -3,9 +3,9 @@ import { siteCompany } from "../content/site";
 
 export default function CTASection() {
   return (
-    <section className="bg-[color:var(--fg)] py-24 text-[color:var(--bg)] md:py-28">
+    <section data-on-dark className="bg-[color:var(--fg)] py-24 text-[color:var(--bg)] md:py-28">
       <div className="container-edge">
-        <div className="flex items-center justify-between font-mono text-[0.7rem] uppercase tracking-[0.2em] text-[color:var(--bg)]/60">
+        <div className="flex items-center justify-between font-mono text-[0.7rem] uppercase tracking-[0.2em] text-[color:var(--bg)]/80">
           <span>05 / Contact</span>
           <span className="hidden sm:inline">Warsaw, Poland</span>
         </div>
@@ -37,7 +37,7 @@ export default function CTASection() {
             </div>
           </div>
           <aside className="md:col-span-4 md:border-l md:border-[color:var(--bg)]/15 md:pl-10">
-            <div className="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-[color:var(--bg)]/55">
+            <div className="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-[color:var(--bg)]/80">
               Direct lines
             </div>
             <a
@@ -54,7 +54,7 @@ export default function CTASection() {
             >
               WhatsApp
             </a>
-            <p className="mt-3 text-[13.5px] text-[color:var(--bg)]/65">
+            <p className="mt-3 text-[13.5px] text-[color:var(--bg)]/80">
               Mon to Fri, 09:00 to 18:00 CET / CEST.
             </p>
           </aside>

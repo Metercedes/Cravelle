@@ -1,9 +1,10 @@
-import { m as motion, useReducedMotion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { processSteps } from "../content/site";
+import { useSafeInitial } from "../lib/animation";
 import SectionHeader from "./SectionHeader";
 
 export default function Process() {
-  const reduce = useReducedMotion();
+  const initial = useSafeInitial({ opacity: 0, y: 16 });
   return (
     <section className="py-24 md:py-32">
       <SectionHeader
@@ -23,7 +24,7 @@ export default function Process() {
           {processSteps.map((s, i) => (
             <motion.li
               key={s.n}
-              initial={reduce ? false : { opacity: 0, y: 16 }}
+              initial={initial}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.55, delay: Math.min(i * 0.05, 0.25), ease: [0.22, 0.61, 0.36, 1] }}

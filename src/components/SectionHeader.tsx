@@ -1,5 +1,6 @@
-import { m as motion, useReducedMotion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import type { ReactNode } from "react";
+import { useSafeInitial } from "../lib/animation";
 
 type Props = {
   index: string;
@@ -10,7 +11,8 @@ type Props = {
 };
 
 export default function SectionHeader({ index, eyebrow, title, intro, align = "spread" }: Props) {
-  const reduce = useReducedMotion();
+  const initialTitle = useSafeInitial({ opacity: 0, y: 12 });
+  const initialIntro = useSafeInitial({ opacity: 0, y: 12 });
   return (
     <header className="container-edge">
       <div className="flex items-center justify-between font-mono text-[0.7rem] uppercase tracking-[0.2em] text-[color:var(--fg-mute)]">
@@ -20,7 +22,7 @@ export default function SectionHeader({ index, eyebrow, title, intro, align = "s
       <div className="hairline-x mt-2" />
       <div className={`mt-10 grid gap-y-6 md:gap-x-10 ${align === "spread" ? "md:grid-cols-12" : ""}`}>
         <motion.h2
-          initial={reduce ? false : { opacity: 0, y: 12 }}
+          initial={initialTitle}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
@@ -30,7 +32,7 @@ export default function SectionHeader({ index, eyebrow, title, intro, align = "s
         </motion.h2>
         {intro && (
           <motion.div
-            initial={reduce ? false : { opacity: 0, y: 12 }}
+            initial={initialIntro}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.6, delay: 0.08, ease: [0.22, 0.61, 0.36, 1] }}

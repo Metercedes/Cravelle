@@ -9,11 +9,11 @@
     --bg-elev: #ffffff;
     --fg: #1c2228;
     --fg-soft: #3e4348;
-    --fg-mute: #6e6f70;
+    --fg-mute: #5b5d5f;
     --rule: rgba(28, 34, 40, 0.14);
     --rule-soft: rgba(28, 34, 40, 0.08);
     --accent: #244c5a;
-    --brass: #b88a55;
+    --brass: #9a6f3e;
     --signal: #5e7a66;
     --route: #a8a29a;
     --selection-bg: #244c5a;
@@ -43,6 +43,9 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
+    /* Reserve space for the scrollbar so the IntroReveal toggling
+       overflow:hidden does not push content horizontally and trip CLS. */
+    scrollbar-gutter: stable;
   }
 
   body {
@@ -221,6 +224,21 @@
 
   .field-label {
     @apply mb-2 block font-mono text-[0.7rem] uppercase tracking-[0.18em] text-[color:var(--fg-mute)];
+  }
+
+  /* Brand mark.
+     Single mask source painted with currentColor, so the same file renders in
+     the light theme, the dark theme, and when the nav sits over a dark
+     section. The PNG carries the wordmark in its alpha channel; we ask
+     browsers to mask by alpha explicitly so the source intent is unambiguous,
+     with a white-luminance fallback for older engines. */
+  .brand-logo {
+    display: inline-block;
+    background-color: currentColor;
+    -webkit-mask: url("/brand/wordmark.png") center / contain no-repeat;
+    mask: url("/brand/wordmark.png") center / contain no-repeat;
+    -webkit-mask-mode: alpha;
+    mask-mode: alpha;
   }
 }
 

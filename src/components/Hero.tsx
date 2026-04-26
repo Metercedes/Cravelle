@@ -1,8 +1,12 @@
-import { m as motion, useReducedMotion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useSafeInitial } from "../lib/animation";
 
 export default function Hero() {
-  const reduce = useReducedMotion();
+  const initialEyebrow = useSafeInitial({ opacity: 0, y: 8 });
+  const initialHeading = useSafeInitial({ opacity: 0, y: 12 });
+  const initialIntro = useSafeInitial({ opacity: 0, y: 12 });
+  const initialActions = useSafeInitial({ opacity: 0, y: 8 });
 
   return (
     <section className="relative overflow-hidden border-b border-[color:var(--rule)] pt-28 md:pt-36">
@@ -12,7 +16,7 @@ export default function Hero() {
         <div className="grid grid-cols-12 gap-x-6 pb-20 pt-12 md:pt-20">
           <div className="col-span-12 md:col-span-10">
             <motion.div
-              initial={reduce ? false : { opacity: 0, y: 8 }}
+              initial={initialEyebrow}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
               className="eyebrow mb-6"
@@ -21,18 +25,18 @@ export default function Hero() {
             </motion.div>
 
             <motion.h1
-              initial={reduce ? false : { opacity: 0, y: 12 }}
+              initial={initialHeading}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: reduce ? 0 : 0.05, ease: [0.22, 0.61, 0.36, 1] }}
+              transition={{ duration: 0.7, delay: 0.05, ease: [0.22, 0.61, 0.36, 1] }}
               className="font-serif text-display-xl"
             >
               The B2B bridge into <span className="italic text-[color:var(--accent)]">Europe</span>.
             </motion.h1>
 
             <motion.p
-              initial={reduce ? false : { opacity: 0, y: 12 }}
+              initial={initialIntro}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: reduce ? 0 : 0.18, ease: [0.22, 0.61, 0.36, 1] }}
+              transition={{ duration: 0.7, delay: 0.18, ease: [0.22, 0.61, 0.36, 1] }}
               className="mt-8 max-w-2xl text-[1.05rem] leading-[1.6] text-[color:var(--fg-soft)] md:text-[1.15rem]"
             >
               Cravelle helps Arabic-speaking businesses, especially Egyptian exporters, connect with
@@ -40,9 +44,9 @@ export default function Hero() {
             </motion.p>
 
             <motion.div
-              initial={reduce ? false : { opacity: 0, y: 8 }}
+              initial={initialActions}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: reduce ? 0 : 0.32, ease: [0.22, 0.61, 0.36, 1] }}
+              transition={{ duration: 0.7, delay: 0.32, ease: [0.22, 0.61, 0.36, 1] }}
               className="mt-10 flex flex-wrap items-center gap-3"
             >
               <Link to="/contact" className="btn-primary">

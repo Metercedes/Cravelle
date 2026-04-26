@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { m as motion, useReducedMotion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { servicePillars } from "../content/site";
 import Disclaimer from "../components/Disclaimer";
 import CTASection from "../components/CTASection";
+import { useSafeInitial } from "../lib/animation";
 import { useSeo } from "../lib/seo";
 
 export default function Services() {
-  const reduce = useReducedMotion();
+  const initial = useSafeInitial({ opacity: 0, y: 16 });
   const { hash } = useLocation();
   const params = useParams();
 
@@ -70,7 +71,7 @@ export default function Services() {
             <motion.li
               key={p.slug}
               id={p.slug}
-              initial={reduce ? false : { opacity: 0, y: 16 }}
+              initial={initial}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.5, ease: [0.22, 0.61, 0.36, 1] }}

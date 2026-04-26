@@ -1,12 +1,13 @@
-import { m as motion, useReducedMotion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { sectors } from "../content/site";
 import Disclaimer from "../components/Disclaimer";
 import CTASection from "../components/CTASection";
+import { useSafeInitial } from "../lib/animation";
 import { useSeo } from "../lib/seo";
 
 export default function Sectors() {
-  const reduce = useReducedMotion();
+  const initial = useSafeInitial({ opacity: 0, y: 12 });
   useSeo({
     title: "Sectors, Cravelle",
     description:
@@ -38,7 +39,7 @@ export default function Sectors() {
           {sectors.map((s, i) => (
             <motion.li
               key={s.id}
-              initial={reduce ? false : { opacity: 0, y: 12 }}
+              initial={initial}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 0.5, delay: Math.min(i * 0.05, 0.2), ease: [0.22, 0.61, 0.36, 1] }}

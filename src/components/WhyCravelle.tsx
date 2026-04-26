@@ -1,9 +1,10 @@
-import { m as motion, useReducedMotion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { whyCravelle } from "../content/site";
+import { useSafeInitial } from "../lib/animation";
 import SectionHeader from "./SectionHeader";
 
 export default function WhyCravelle() {
-  const reduce = useReducedMotion();
+  const initial = useSafeInitial({ opacity: 0, y: 14 });
   return (
     <section className="border-y border-[color:var(--rule)] bg-[color:var(--bg-soft)]/50 py-24 md:py-32">
       <SectionHeader
@@ -17,7 +18,7 @@ export default function WhyCravelle() {
           {whyCravelle.points.map((p, i) => (
             <motion.div
               key={p.title}
-              initial={reduce ? false : { opacity: 0, y: 14 }}
+              initial={initial}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 0.5, delay: Math.min(i * 0.05, 0.2), ease: [0.22, 0.61, 0.36, 1] }}

@@ -1,26 +1,8 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { footerLinks, siteCompany } from "../content/site";
 
 export default function Footer() {
   const year = new Date().getFullYear();
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    if (typeof document === "undefined") return "light";
-    return (document.documentElement.dataset.theme as "light" | "dark" | undefined) ?? "light";
-  });
-
-  useEffect(() => {
-    const apply = () => {
-      const t = (document.documentElement.dataset.theme as "light" | "dark" | undefined) ?? "light";
-      setTheme(t);
-    };
-    const observer = new MutationObserver(apply);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => observer.disconnect();
-  }, []);
-
-  const logoSrc = theme === "dark" ? "/brand/logo-white.png" : "/brand/logo.png";
-
   return (
     <footer
       className="border-t border-[color:var(--rule)] bg-[color:var(--bg-soft)]/40"
@@ -29,15 +11,11 @@ export default function Footer() {
       <div className="container-edge grid gap-10 py-16 md:grid-cols-12">
         <div className="md:col-span-5">
           <Link to="/" aria-label="Cravelle, home" className="inline-flex items-center text-[color:var(--fg)]">
-            <img
-              src={logoSrc}
-              alt="Cravelle"
-              width={120}
-              height={32}
-              loading="lazy"
-              decoding="async"
-              draggable={false}
-              className="h-8 w-auto"
+            <span
+              className="brand-logo block h-9"
+              style={{ aspectRatio: "434 / 556", width: "auto" }}
+              role="img"
+              aria-label="Cravelle"
             />
           </Link>
           <p className="mt-6 max-w-md text-[15px] leading-[1.6] text-[color:var(--fg-soft)]">

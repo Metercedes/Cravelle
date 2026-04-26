@@ -242,7 +242,7 @@ export const footerLinks = [
 ];
 
 export const formIntake = {
-  heading: "Send a trade inquiry",
+  heading: "Talk to Cravelle.",
   intro:
     "We respond within two working days. Brief replies are normal. We ask for written context first so the call is useful for both sides.",
   fields: {

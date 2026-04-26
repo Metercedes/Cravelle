@@ -1,17 +1,19 @@
-import { Suspense, lazy, useEffect } from "react";
+import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { LazyMotion, domAnimation } from "framer-motion";
 import IntroReveal from "./components/IntroReveal";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
-
-const Home = lazy(() => import("./pages/Home"));
-const Services = lazy(() => import("./pages/Services"));
-const Sectors = lazy(() => import("./pages/Sectors"));
-const About = lazy(() => import("./pages/About"));
-const Contact = lazy(() => import("./pages/Contact"));
-const Legal = lazy(() => import("./pages/Legal"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+// Pages are imported eagerly so the SSR / prerender pass renders real HTML
+// for every route synchronously. The site is small enough that the bundle
+// size impact is negligible, and Vite still tree-shakes unused code.
+import Home from "./pages/Home";
+import Services from "./pages/Services";
+import Sectors from "./pages/Sectors";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Legal from "./pages/Legal";
+import NotFound from "./pages/NotFound";
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -29,18 +31,16 @@ export default function App() {
       <Nav />
       <ScrollToTop />
       <main id="main">
-        <Suspense fallback={<div className="min-h-[60vh]" aria-hidden />}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/services/:slug" element={<Services />} />
-            <Route path="/sectors" element={<Sectors />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/legal" element={<Legal />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/services/:slug" element={<Services />} />
+          <Route path="/sectors" element={<Sectors />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/legal" element={<Legal />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </main>
       <Footer />
     </LazyMotion>

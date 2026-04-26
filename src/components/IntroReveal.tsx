@@ -1,59 +1,42 @@
 import { AnimatePresence, m as motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-const STORAGE_KEY = "cravelle:intro:seen";
-const SESSION_KEY = "cravelle:intro:session";
-
+// The intro is mounted once at App start, so it plays on every fresh page
+// load (cold load + browser refresh) and stays out of the way during
+// client-side route changes. We restrict the reveal to the homepage so
+// refreshing a deep route doesn't surprise the user with a brand splash.
 export default function IntroReveal() {
   const reduce = useReducedMotion();
   const [show, setShow] = useState<boolean | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    try {
-      const session = sessionStorage.getItem(SESSION_KEY);
-      const persisted = localStorage.getItem(STORAGE_KEY);
-      if (session === "done" || persisted === "done") {
-        setShow(false);
-        return;
-      }
-    } catch {
-      // storage unavailable: still show the intro once
+    if (window.location.pathname !== "/") {
+      setShow(false);
+      return;
     }
     setShow(true);
     document.documentElement.style.overflow = "hidden";
+    const duration = reduce ? 600 : 1900;
     const t = window.setTimeout(() => {
-      finish();
-    }, reduce ? 600 : 1900);
-    return () => window.clearTimeout(t);
+      document.documentElement.style.overflow = "";
+      setShow(false);
+    }, duration);
+    return () => {
+      window.clearTimeout(t);
+      document.documentElement.style.overflow = "";
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const finish = () => {
-    try {
-      sessionStorage.setItem(SESSION_KEY, "done");
-      localStorage.setItem(STORAGE_KEY, "done");
-    } catch {
-      /* ignore */
-    }
-    document.documentElement.style.overflow = "";
-    setShow(false);
-  };
-
   if (show === null) return null;
-
-  const theme =
-    typeof document !== "undefined"
-      ? (document.documentElement.dataset.theme as "light" | "dark" | undefined) ?? "light"
-      : "light";
-  const logoSrc = theme === "dark" ? "/brand/logo-white.png" : "/brand/logo.png";
 
   return (
     <AnimatePresence>
       {show && (
         <motion.div
           key="intro"
-          className="fixed inset-0 z-[80] pointer-events-none"
+          className="fixed inset-0 z-[80] pointer-events-none text-[color:var(--fg)]"
           aria-hidden="true"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.4, ease: [0.22, 0.61, 0.36, 1] } }}
@@ -74,19 +57,15 @@ export default function IntroReveal() {
           />
 
           <div className="absolute inset-0 grid place-items-center px-6">
-            <motion.img
-              src={logoSrc}
-              alt=""
-              width={240}
-              height={64}
-              fetchPriority="high"
-              decoding="async"
-              draggable={false}
+            <motion.span
+              role="img"
+              aria-label="Cravelle"
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 0.61, 0.36, 1] }}
-              className="h-16 w-auto sm:h-20 md:h-24"
+              className="brand-logo block h-24 sm:h-28 md:h-32"
+              style={{ aspectRatio: "434 / 556", width: "auto" }}
             />
           </div>
         </motion.div>

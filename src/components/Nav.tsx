@@ -6,10 +6,11 @@ import { navLinks, siteCompany } from "../content/site";
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    if (typeof document === "undefined") return "light";
-    return (document.documentElement.dataset.theme as "light" | "dark" | undefined) ?? "light";
-  });
+  const [onDark, setOnDark] = useState(false);
+  // Start with a stable value so the SSR markup and the first client render
+  // agree. The actual theme set by the inline boot script is read in an
+  // effect below, after hydration.
+  const [theme, setTheme] = useState<"light" | "dark">("light");
   const location = useLocation();
   const panelRef = useRef<HTMLDivElement | null>(null);
   const toggleBtnRef = useRef<HTMLButtonElement | null>(null);
@@ -19,6 +20,14 @@ export default function Nav() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Pick up whatever theme the inline boot script applied to <html>. Running
+  // this in an effect avoids hydration mismatches because the SSR pass and
+  // first client render both start from the stable "light" default.
+  useEffect(() => {
+    const t = (document.documentElement.dataset.theme as "light" | "dark" | undefined) ?? "light";
+    setTheme(t);
   }, []);
 
   useEffect(() => {
@@ -54,6 +63,33 @@ export default function Nav() {
     }
   }, [open]);
 
+  // Detect when the nav is sitting over a section flagged data-on-dark.
+  // Sections opt in by adding the attribute, and the nav flips its text/logo
+  // colour for legibility while it overlaps that section.
+  useEffect(() => {
+    const targets = document.querySelectorAll<HTMLElement>("[data-on-dark]");
+    if (targets.length === 0) return;
+    const navHeight = 72;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setOnDark(true);
+          else {
+            // Re-check whether any other dark section still overlaps.
+            const stillDark = Array.from(targets).some((el) => {
+              const r = el.getBoundingClientRect();
+              return r.top <= navHeight && r.bottom >= 0;
+            });
+            setOnDark(stillDark);
+          }
+        });
+      },
+      { rootMargin: `0px 0px -${Math.max(0, window.innerHeight - navHeight)}px 0px`, threshold: 0 }
+    );
+    targets.forEach((t) => observer.observe(t));
+    return () => observer.disconnect();
+  }, [location.pathname]);
+
   const toggleTheme = () => {
     const next = theme === "light" ? "dark" : "light";
     setTheme(next);
@@ -65,27 +101,28 @@ export default function Nav() {
     }
   };
 
-  const logoSrc = theme === "dark" ? "/brand/logo-white.png" : "/brand/logo.png";
+  // Colour the nav text/logo:
+  //   - default uses var(--fg) (cream on dark theme, graphite on light)
+  //   - when overlapping a dark-flagged section it flips to var(--bg) so it
+  //     stays legible against the dark background showing through
+  const fgColor = onDark && !scrolled ? "var(--bg)" : "var(--fg)";
+  const softColor = onDark && !scrolled ? "rgba(246,241,232,0.75)" : "var(--fg-soft)";
 
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
         scrolled || open ? "bg-[color:var(--bg)]/95 backdrop-blur-sm" : "bg-transparent"
       }`}
-      style={{ paddingTop: "env(safe-area-inset-top)" }}
+      style={{ paddingTop: "env(safe-area-inset-top)", color: fgColor }}
     >
-      <div className="border-b border-[color:var(--rule-soft)]">
+      <div className="border-b" style={{ borderColor: scrolled || open ? "var(--rule-soft)" : "transparent" }}>
         <div className="container-edge flex h-16 items-center justify-between gap-6 md:h-[72px]">
-          <Link to="/" aria-label="Cravelle, home" className="flex items-center text-[color:var(--fg)]">
-            <img
-              src={logoSrc}
-              alt="Cravelle"
-              width={120}
-              height={32}
-              fetchPriority="high"
-              decoding="async"
-              draggable={false}
-              className="h-7 w-auto md:h-8"
+          <Link to="/" aria-label="Cravelle, home" className="flex items-center" style={{ color: fgColor }}>
+            <span
+              className="brand-logo block h-7 md:h-8"
+              style={{ aspectRatio: "434 / 556", width: "auto" }}
+              role="img"
+              aria-label="Cravelle"
             />
           </Link>
 
@@ -95,11 +132,12 @@ export default function Nav() {
                 <li key={l.to}>
                   <NavLink
                     to={l.to}
+                    style={({ isActive }) => ({ color: isActive ? fgColor : softColor })}
                     className={({ isActive }) =>
                       `text-sm transition-colors ${
                         isActive
-                          ? "text-[color:var(--fg)] underline decoration-[color:var(--brass)] decoration-1 underline-offset-[6px]"
-                          : "text-[color:var(--fg-soft)] hover:text-[color:var(--fg)]"
+                          ? "underline decoration-[color:var(--brass)] decoration-1 underline-offset-[6px]"
+                          : "hover:opacity-100"
                       }`
                     }
                   >
@@ -115,13 +153,15 @@ export default function Nav() {
               type="button"
               onClick={toggleTheme}
               aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
-              className="hidden h-9 w-9 items-center justify-center border border-[color:var(--rule-soft)] text-[color:var(--fg-soft)] transition-colors hover:border-[color:var(--rule)] hover:text-[color:var(--fg)] md:flex"
+              className="hidden h-9 w-9 items-center justify-center border transition-colors md:flex"
+              style={{ borderColor: scrolled || open ? "var(--rule-soft)" : "rgba(0,0,0,0)", color: softColor }}
             >
               <span aria-hidden className="text-[0.85rem]">{theme === "light" ? "◐" : "◑"}</span>
             </button>
             <Link
               to="/contact"
-              className="hidden md:inline-flex items-center gap-2 border border-[color:var(--fg)] px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-[color:var(--fg)] transition-colors hover:bg-[color:var(--fg)] hover:text-[color:var(--bg)]"
+              className="hidden md:inline-flex items-center gap-2 border px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] transition-colors hover:bg-[color:var(--fg)] hover:text-[color:var(--bg)]"
+              style={{ borderColor: fgColor, color: fgColor }}
             >
               Contact
               <span aria-hidden>→</span>
@@ -133,10 +173,11 @@ export default function Nav() {
               aria-expanded={open}
               aria-controls="mobile-menu-panel"
               onClick={() => setOpen((v) => !v)}
-              className="md:hidden h-11 w-11 grid place-items-center border border-[color:var(--rule)]"
+              className="md:hidden h-11 w-11 grid place-items-center border"
+              style={{ borderColor: fgColor }}
             >
-              <span aria-hidden className="block h-px w-4 bg-[color:var(--fg)] transition-transform" style={{ transform: open ? "translateY(2px) rotate(45deg)" : "translateY(-3px)" }} />
-              <span aria-hidden className="block h-px w-4 bg-[color:var(--fg)] transition-transform" style={{ transform: open ? "translateY(1px) rotate(-45deg)" : "translateY(3px)" }} />
+              <span aria-hidden className="block h-px w-4 transition-transform" style={{ background: fgColor, transform: open ? "translateY(2px) rotate(45deg)" : "translateY(-3px)" }} />
+              <span aria-hidden className="block h-px w-4 transition-transform" style={{ background: fgColor, transform: open ? "translateY(1px) rotate(-45deg)" : "translateY(3px)" }} />
             </button>
           </div>
         </div>
@@ -152,7 +193,7 @@ export default function Nav() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.25, ease: [0.22, 0.61, 0.36, 1] }}
-            className="md:hidden border-b border-[color:var(--rule)] bg-[color:var(--bg)]"
+            className="md:hidden border-b border-[color:var(--rule)] bg-[color:var(--bg)] text-[color:var(--fg)]"
           >
             <div className="container-edge py-8" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 2rem)" }}>
               <div className="eyebrow mb-4">Menu</div>
