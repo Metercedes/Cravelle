@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "private": true,
   "type": "module",
-  "description": "Cravelle — clear routes into Poland.",
+  "description": "Cravelle, the B2B bridge into Europe.",
   "scripts": {
     "dev": "vite",
     "build:client": "vite build",
@@ -15,7 +15,6 @@
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
-    "framer-motion": "^11.5.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2"

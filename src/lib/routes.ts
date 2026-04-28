@@ -19,14 +19,14 @@ export const routeMeta: ReadonlyArray<RouteMeta> = [
     output: "index.html",
     title: "Cravelle, the B2B bridge into Europe.",
     description:
-      "Cravelle is a Poland-based B2B trade and partnership company helping Arabic-speaking businesses, especially Egyptian exporters, connect with Europe through export support, commercial introductions, and market-entry coordination.",
+      "Cravelle is the Poland-based B2B bridge connecting Arabic-speaking suppliers, especially Egyptian exporters, with the European market through export support, commercial introductions, and market-entry coordination.",
   },
   {
     path: "/services",
     output: "services/index.html",
     title: "Services, Cravelle",
     description:
-      "Three focused services: export and market entry support, B2B partnership facilitation, and hospitality and premium supplier sourcing.",
+      "Three focused services from Cravelle: export and market entry support, B2B partnership facilitation, and hospitality and premium supplier sourcing.",
   },
   {
     path: "/sectors",
@@ -40,7 +40,7 @@ export const routeMeta: ReadonlyArray<RouteMeta> = [
     output: "about/index.html",
     title: "About, Cravelle",
     description:
-      "Cravelle is a Poland-based B2B trade and partnership company helping Arabic-speaking businesses, especially Egyptian exporters, connect with Europe.",
+      "Cravelle is the Poland-based B2B bridge connecting Arabic-speaking suppliers, especially Egyptian exporters, with the European market.",
   },
   {
     path: "/contact",

@@ -23,7 +23,7 @@ const sections = [
     title: "3. Engagements and fees",
     body: [
       "All commercial work is conducted under a written engagement letter that defines scope, deliverables, fees, and termination. No mandate is implied by exchanging emails, calls, or introductory materials.",
-      "Where required, we issue VAT invoices in accordance with Polish law from CRAVELLE sp. z o.o.",
+      "Where required, we issue VAT invoices in accordance with Polish law from Cravelle Sp. z o.o.",
     ],
   },
   {
@@ -39,7 +39,7 @@ const sections = [
     id: "cookies",
     title: "5. Cookies and analytics",
     body: [
-      "This website does not set marketing or tracking cookies. Strictly necessary functional storage may be used to remember the intro animation and theme preference; this storage is local to your browser and is not shared.",
+      "This website does not set marketing or tracking cookies. A localStorage entry may be used to remember the theme preference you choose. The intro animation does not set or read localStorage, sessionStorage, or cookies.",
       "If we introduce privacy-conscious analytics in future, we will update this page and, where required, request consent.",
     ],
   },
@@ -47,14 +47,14 @@ const sections = [
     id: "ip",
     title: "6. Trademarks and content",
     body: [
-      "The name Cravelle, the logo, and the page layouts on this website are the property of CRAVELLE sp. z o.o. Other names, marks, and logos shown belong to their respective owners and are referenced only for identification.",
+      "The name Cravelle, the logo, and the page layouts on this website are the property of Cravelle Sp. z o.o. Other names, marks, and logos shown belong to their respective owners and are referenced only for identification.",
     ],
   },
   {
     id: "law",
     title: "7. Governing law",
     body: [
-      "These terms are governed by the laws of the Republic of Poland. Disputes shall be resolved by the courts competent for the registered seat of CRAVELLE sp. z o.o., to the extent permitted by mandatory consumer protection rules.",
+      "These terms are governed by the laws of the Republic of Poland. Disputes shall be resolved by the courts competent for the registered seat of Cravelle Sp. z o.o., to the extent permitted by mandatory consumer protection rules.",
     ],
   },
 ];

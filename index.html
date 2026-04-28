@@ -9,8 +9,8 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="robots" content="index,follow,max-image-preview:large" />
-    <meta name="author" content="Cravelle sp. z o.o." />
-    <meta name="description" content="Cravelle is a Poland-based B2B trade and partnership company helping Arabic-speaking businesses, especially Egyptian exporters, connect with Europe through export support, commercial introductions, and market-entry coordination." />
+    <meta name="author" content="Cravelle Sp. z o.o." />
+    <meta name="description" content="Cravelle, the B2B bridge into Europe. Export support, commercial introductions, and market-entry coordination for Arabic-speaking suppliers entering the European market." />
 
     <link rel="canonical" href="https://cravelle.co/" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -24,7 +24,7 @@
     <meta property="og:locale" content="en_GB" />
     <meta property="og:site_name" content="Cravelle" />
     <meta property="og:title" content="Cravelle, the B2B bridge into Europe." />
-    <meta property="og:description" content="Export support, commercial introductions, and market-entry coordination for Arabic-speaking businesses entering Europe." />
+    <meta property="og:description" content="Export support, commercial introductions, and market-entry coordination for Arabic-speaking suppliers entering Europe." />
     <meta property="og:image" content="https://cravelle.co/og-image.svg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -33,27 +33,6 @@
     <meta name="twitter:title" content="Cravelle, the B2B bridge into Europe." />
     <meta name="twitter:description" content="Export support, commercial introductions, and market-entry coordination." />
     <meta name="twitter:image" content="https://cravelle.co/og-image.svg" />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!--
-      Load Google Fonts CSS without blocking render. The print-media trick
-      lets the browser fetch and parse the stylesheet in the background, then
-      the onload handler swaps it to the real media so it applies. The
-      <noscript> fallback ensures fonts still load with JS disabled.
-    -->
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=optional"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=optional"
-      />
-    </noscript>
 
     <title>Cravelle, the B2B bridge into Europe.</title>
 
@@ -77,7 +56,7 @@
       {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": "CRAVELLE sp. z o.o.",
+        "name": "Cravelle Sp. z o.o.",
         "alternateName": "Cravelle",
         "url": "https://cravelle.co",
         "logo": "https://cravelle.co/brand/logo.png",
@@ -94,16 +73,43 @@
           { "@type": "PropertyValue", "propertyID": "NIP", "value": "5253079394" }
         ],
         "areaServed": "Poland and the European Union",
-        "description": "B2B trade and partnership company helping Arabic-speaking businesses, especially Egyptian exporters, connect with Europe through export support, commercial introductions, and market-entry coordination."
+        "description": "B2B bridge helping Arabic-speaking suppliers, especially Egyptian exporters, connect with Europe through export support, commercial introductions, and market-entry coordination."
       }
     </script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <div id="root"></div>
+
+    <!--
+      Intro overlay. Pure CSS animation, no framework dependency. Rendered
+      eagerly so the brand reveal can paint before React hydrates. Removed
+      from the DOM after the animation ends. Only plays on the homepage.
+    -->
+    <div id="intro" hidden aria-hidden="true">
+      <div class="intro-lockup">
+        <span class="intro-mark" aria-hidden="true"></span>
+        <span class="intro-caption">Cravelle Sp. z o.o.</span>
+      </div>
+    </div>
+    <script>
+      (function () {
+        if (location.pathname !== '/') return;
+        var intro = document.getElementById('intro');
+        if (!intro) return;
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        intro.removeAttribute('hidden');
+        intro.dataset.mode = reduce ? 'reduce' : 'play';
+        var dur = reduce ? 900 : 2450;
+        setTimeout(function () {
+          if (intro && intro.parentNode) intro.parentNode.removeChild(intro);
+        }, dur);
+      })();
+    </script>
+
     <noscript>
-      <div style="padding:1rem 1.25rem;font-family:system-ui;font-size:13px;color:#1C2228;background:#ECE7DD;border-bottom:1px solid rgba(28,34,40,0.14)">
-        The contact form requires JavaScript. You can still reach us by email at
+      <div style="padding:1rem 1.25rem;font-family:system-ui,sans-serif;font-size:13px;color:#1C2228;background:#ECE7DD;border-bottom:1px solid rgba(28,34,40,0.14)">
+        The contact form requires JavaScript. You can still reach Cravelle by email at
         <a href="mailto:cravelle.co@protonmail.com">cravelle.co@protonmail.com</a> or by phone on
         <a href="tel:+48729420936">+48 729 420 936</a>.
       </div>

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { m as motion, AnimatePresence } from "framer-motion";
 import { navLinks, siteCompany } from "../content/site";
 
 export default function Nav() {
@@ -22,9 +21,6 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Pick up whatever theme the inline boot script applied to <html>. Running
-  // this in an effect avoids hydration mismatches because the SSR pass and
-  // first client render both start from the stable "light" default.
   useEffect(() => {
     const t = (document.documentElement.dataset.theme as "light" | "dark" | undefined) ?? "light";
     setTheme(t);
@@ -75,7 +71,6 @@ export default function Nav() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) setOnDark(true);
           else {
-            // Re-check whether any other dark section still overlaps.
             const stillDark = Array.from(targets).some((el) => {
               const r = el.getBoundingClientRect();
               return r.top <= navHeight && r.bottom >= 0;
@@ -84,7 +79,7 @@ export default function Nav() {
           }
         });
       },
-      { rootMargin: `0px 0px -${Math.max(0, window.innerHeight - navHeight)}px 0px`, threshold: 0 }
+      { rootMargin: `0px 0px -${Math.max(0, window.innerHeight - navHeight)}px 0px`, threshold: 0 },
     );
     targets.forEach((t) => observer.observe(t));
     return () => observer.disconnect();
@@ -101,10 +96,6 @@ export default function Nav() {
     }
   };
 
-  // Colour the nav text/logo:
-  //   - default uses var(--fg) (cream on dark theme, graphite on light)
-  //   - when overlapping a dark-flagged section it flips to var(--bg) so it
-  //     stays legible against the dark background showing through
   const fgColor = onDark && !scrolled ? "var(--bg)" : "var(--fg)";
   const softColor = onDark && !scrolled ? "rgba(246,241,232,0.75)" : "var(--fg-soft)";
 
@@ -154,9 +145,14 @@ export default function Nav() {
               onClick={toggleTheme}
               aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
               className="hidden h-9 w-9 items-center justify-center border transition-colors md:flex"
-              style={{ borderColor: scrolled || open ? "var(--rule-soft)" : "rgba(0,0,0,0)", color: softColor }}
+              style={{
+                borderColor: scrolled || open ? "var(--rule-soft)" : "rgba(0,0,0,0)",
+                color: softColor,
+              }}
             >
-              <span aria-hidden className="text-[0.85rem]">{theme === "light" ? "◐" : "◑"}</span>
+              <span aria-hidden className="text-[0.85rem]">
+                {theme === "light" ? "◐" : "◑"}
+              </span>
             </button>
             <Link
               to="/contact"
@@ -176,58 +172,75 @@ export default function Nav() {
               className="md:hidden h-11 w-11 grid place-items-center border"
               style={{ borderColor: fgColor }}
             >
-              <span aria-hidden className="block h-px w-4 transition-transform" style={{ background: fgColor, transform: open ? "translateY(2px) rotate(45deg)" : "translateY(-3px)" }} />
-              <span aria-hidden className="block h-px w-4 transition-transform" style={{ background: fgColor, transform: open ? "translateY(1px) rotate(-45deg)" : "translateY(3px)" }} />
+              <span
+                aria-hidden
+                className="block h-px w-4 transition-transform"
+                style={{
+                  background: fgColor,
+                  transform: open ? "translateY(2px) rotate(45deg)" : "translateY(-3px)",
+                }}
+              />
+              <span
+                aria-hidden
+                className="block h-px w-4 transition-transform"
+                style={{
+                  background: fgColor,
+                  transform: open ? "translateY(1px) rotate(-45deg)" : "translateY(3px)",
+                }}
+              />
             </button>
           </div>
         </div>
       </div>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            id="mobile-menu-panel"
-            key="mobile-panel"
-            ref={panelRef}
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25, ease: [0.22, 0.61, 0.36, 1] }}
-            className="md:hidden border-b border-[color:var(--rule)] bg-[color:var(--bg)] text-[color:var(--fg)]"
+      <div
+        id="mobile-menu-panel"
+        ref={panelRef}
+        className="menu-panel md:hidden border-b border-[color:var(--rule)] bg-[color:var(--bg)] text-[color:var(--fg)]"
+        data-open={open}
+      >
+        <div className="menu-panel-inner">
+          <div
+            className="container-edge py-8"
+            style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 2rem)" }}
           >
-            <div className="container-edge py-8" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 2rem)" }}>
-              <div className="eyebrow mb-4">Menu</div>
-              <ul className="flex flex-col gap-1">
-                {navLinks.map((l, i) => (
-                  <li key={l.to} className="border-b border-[color:var(--rule-soft)] last:border-b-0">
-                    <NavLink
-                      to={l.to}
-                      className="flex items-baseline justify-between py-4 font-serif text-[1.6rem] leading-none tracking-[-0.01em]"
-                    >
-                      <span>{l.label}</span>
-                      <span className="font-mono text-[0.7rem] tracking-[0.2em] text-[color:var(--fg-mute)]">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                    </NavLink>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-8 flex items-center justify-between border-t border-[color:var(--rule)] pt-6">
-                <a href={`tel:${siteCompany.contact.phoneE164}`} className="text-sm">
-                  {siteCompany.contact.phone}
-                </a>
-                <button
-                  type="button"
-                  onClick={toggleTheme}
-                  className="text-xs uppercase tracking-[0.18em] text-[color:var(--fg-soft)]"
-                >
-                  {theme === "light" ? "Dark" : "Light"} theme
-                </button>
-              </div>
+            <div className="eyebrow mb-4">Menu</div>
+            <ul className="flex flex-col gap-1">
+              {navLinks.map((l, i) => (
+                <li key={l.to} className="border-b border-[color:var(--rule-soft)] last:border-b-0">
+                  <NavLink
+                    to={l.to}
+                    className="flex items-baseline justify-between py-4 font-serif text-[1.6rem] leading-none tracking-[-0.01em]"
+                    tabIndex={open ? 0 : -1}
+                  >
+                    <span>{l.label}</span>
+                    <span className="font-mono text-[0.7rem] tracking-[0.2em] text-[color:var(--fg-mute)]">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-8 flex items-center justify-between border-t border-[color:var(--rule)] pt-6">
+              <a
+                href={`tel:${siteCompany.contact.phoneE164}`}
+                className="text-sm"
+                tabIndex={open ? 0 : -1}
+              >
+                {siteCompany.contact.phone}
+              </a>
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="text-xs uppercase tracking-[0.18em] text-[color:var(--fg-soft)]"
+                tabIndex={open ? 0 : -1}
+              >
+                {theme === "light" ? "Dark" : "Light"} theme
+              </button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      </div>
     </header>
   );
 }

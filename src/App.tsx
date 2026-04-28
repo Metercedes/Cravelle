@@ -1,7 +1,5 @@
 import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import { LazyMotion, domAnimation } from "framer-motion";
-import IntroReveal from "./components/IntroReveal";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 // Pages are imported eagerly so the SSR / prerender pass renders real HTML
@@ -26,8 +24,7 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <LazyMotion features={domAnimation} strict>
-      <IntroReveal />
+    <>
       <Nav />
       <ScrollToTop />
       <main id="main">
@@ -43,6 +40,6 @@ export default function App() {
         </Routes>
       </main>
       <Footer />
-    </LazyMotion>
+    </>
   );
 }

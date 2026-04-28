@@ -1,21 +1,18 @@
 import { useEffect } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { m as motion } from "framer-motion";
 import { servicePillars } from "../content/site";
 import Disclaimer from "../components/Disclaimer";
 import CTASection from "../components/CTASection";
-import { useSafeInitial } from "../lib/animation";
 import { useSeo } from "../lib/seo";
 
 export default function Services() {
-  const initial = useSafeInitial({ opacity: 0, y: 16 });
   const { hash } = useLocation();
   const params = useParams();
 
   useSeo({
     title: "Services, Cravelle",
     description:
-      "Three focused services: export and market entry support, B2B partnership facilitation, and hospitality and premium supplier sourcing.",
+      "Three focused services from Cravelle: export and market entry support, B2B partnership facilitation, and hospitality and premium supplier sourcing.",
     path: "/services",
   });
 
@@ -34,32 +31,40 @@ export default function Services() {
     <>
       <section className="border-b border-[color:var(--rule)] pt-32 md:pt-40">
         <div className="container-edge">
-          <div className="flex items-center justify-between font-mono text-[0.7rem] uppercase tracking-[0.2em] text-[color:var(--fg-mute)]">
+          <div className="flex items-center justify-between font-mono text-[0.7rem] uppercase tracking-[0.2em] text-[color:var(--fg-soft)]">
             <span>Index / Services</span>
             <span>{servicePillars.length} services</span>
           </div>
           <div className="hairline-x mt-2" />
-          <h1 className="mt-12 max-w-4xl font-serif text-display-xl">
-            What Cravelle does.
-          </h1>
+          <h1 className="mt-12 max-w-4xl font-serif text-display-xl">What Cravelle does.</h1>
           <p className="mt-8 max-w-2xl text-[1.05rem] leading-[1.6] text-[color:var(--fg-soft)]">
-            Three focused services for Arabic-speaking suppliers and the European partners
-            who buy from them. Each one is a defined commercial mandate with a clear outcome.
+            Three focused services for Arabic-speaking suppliers and the European partners who buy
+            from them. Each one is a defined commercial mandate with a clear outcome.
           </p>
         </div>
       </section>
 
       <section className="container-edge pt-12">
-        <nav aria-label="Service jump menu" className="grid gap-px overflow-hidden border-l border-t border-[color:var(--rule)] md:grid-cols-3">
+        <nav
+          aria-label="Service jump menu"
+          className="grid gap-px overflow-hidden border-l border-t border-[color:var(--rule)] md:grid-cols-3"
+        >
           {servicePillars.map((p) => (
             <Link
               key={p.slug}
               to={`#${p.slug}`}
               className="group flex items-baseline gap-3 border-b border-r border-[color:var(--rule)] bg-[color:var(--bg)] p-5 hover:bg-[color:var(--bg-soft)]/60"
             >
-              <span className="font-mono text-[0.7rem] tracking-[0.18em] text-[color:var(--brass)]">{p.number}</span>
+              <span className="font-mono text-[0.7rem] tracking-[0.18em] text-[color:var(--brass)]">
+                {p.number}
+              </span>
               <span className="text-[14.5px]">{p.shortTitle}</span>
-              <span aria-hidden className="ml-auto translate-x-0 font-mono text-[0.9rem] text-[color:var(--fg-mute)] transition-transform group-hover:translate-x-1">↓</span>
+              <span
+                aria-hidden
+                className="ml-auto translate-x-0 font-mono text-[0.9rem] text-[color:var(--fg-soft)] transition-transform group-hover:translate-x-1"
+              >
+                ↓
+              </span>
             </Link>
           ))}
         </nav>
@@ -68,18 +73,14 @@ export default function Services() {
       <div className="container-edge py-20 md:py-28">
         <ol className="flex flex-col gap-20 md:gap-28">
           {servicePillars.map((p, i) => (
-            <motion.li
-              key={p.slug}
-              id={p.slug}
-              initial={initial}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.5, ease: [0.22, 0.61, 0.36, 1] }}
-              className="scroll-mt-28"
-            >
-              <div className="flex items-center justify-between font-mono text-[0.7rem] uppercase tracking-[0.18em] text-[color:var(--fg-mute)]">
-                <span>{p.number} / {p.shortTitle}</span>
-                <span>{i + 1} of {servicePillars.length}</span>
+            <li key={p.slug} id={p.slug} className="reveal scroll-mt-28">
+              <div className="flex items-center justify-between font-mono text-[0.7rem] uppercase tracking-[0.18em] text-[color:var(--fg-soft)]">
+                <span>
+                  {p.number} / {p.shortTitle}
+                </span>
+                <span>
+                  {i + 1} of {servicePillars.length}
+                </span>
               </div>
               <div className="hairline-x mt-2" />
 
@@ -97,7 +98,10 @@ export default function Services() {
                     <div className="eyebrow">What we do</div>
                     <ul className="mt-4 grid gap-3">
                       {p.whatWeDo.map((item) => (
-                        <li key={item} className="grid grid-cols-[16px_1fr] gap-3 text-[15px] leading-[1.55] text-[color:var(--fg)]">
+                        <li
+                          key={item}
+                          className="grid grid-cols-[16px_1fr] gap-3 text-[15px] leading-[1.55] text-[color:var(--fg)]"
+                        >
                           <span aria-hidden className="mt-[10px] block h-px w-3 bg-[color:var(--brass)]" />
                           <span>{item}</span>
                         </li>
@@ -117,7 +121,7 @@ export default function Services() {
                   </div>
                 </div>
               </div>
-            </motion.li>
+            </li>
           ))}
         </ol>
 

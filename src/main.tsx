@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
-import { markHydrated } from "./lib/animation";
 import "./styles/index.css";
 
 // Recover deep links when hosting falls back to 404.html instead of index.html.
@@ -13,6 +12,10 @@ import "./styles/index.css";
   window.history.replaceState(null, "", pendingPath);
 })();
 
+// Mark the document as JS-ready so .reveal classes can hide-then-fade-in
+// without leaving content invisible for crawlers or JS-disabled users.
+document.documentElement.classList.add("js-ready");
+
 const container = document.getElementById("root")!;
 const tree = (
   <React.StrictMode>
@@ -22,17 +25,29 @@ const tree = (
   </React.StrictMode>
 );
 
-// Use hydrateRoot when the prerender output is present so we keep the static
-// markup intact and avoid a flash of re-rendered content. Fall back to a
-// fresh render only if something has cleared the root (defensive — should
-// not happen in production).
 if (container.firstElementChild) {
   ReactDOM.hydrateRoot(container, tree);
 } else {
   ReactDOM.createRoot(container).render(tree);
 }
 
-// Once we've yielded back to the event loop, hydration is in flight. Flag the
-// app as hydrated so motion components mounted by subsequent client-side
-// route changes restore their entrance animations.
-queueMicrotask(markHydrated);
+// Tiny IntersectionObserver wiring for .reveal sections — < 0.5 KB of code
+// instead of the full Framer Motion runtime.
+(() => {
+  if (typeof IntersectionObserver === "undefined") {
+    document.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-visible"));
+    return;
+  }
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          io.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
+  );
+  document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+})();

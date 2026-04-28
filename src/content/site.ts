@@ -3,13 +3,13 @@
 // under a locale key without touching component code.
 
 export const siteCompany = {
-  legalName: "CRAVELLE sp. z o.o.",
+  legalName: "Cravelle Sp. z o.o.",
   legalNameFull: "CRAVELLE SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ",
   brand: "Cravelle",
   positioning:
-    "Cravelle is a Poland-based B2B trade and partnership company helping Arabic-speaking businesses, especially Egyptian exporters, connect with Europe through export support, commercial introductions, and market-entry coordination.",
+    "Cravelle is the Poland-based B2B bridge connecting Arabic-speaking suppliers, especially Egyptian exporters, with the European market through export support, commercial introductions, and market-entry coordination.",
   shortPositioning:
-    "Export support, commercial introductions, and market-entry coordination for Arabic-speaking businesses entering Europe.",
+    "The B2B bridge into Europe. Export support, commercial introductions, and market-entry coordination for Arabic-speaking suppliers.",
   address: {
     line1: "ul. Wiślana 8",
     postalCode: "00-317",

@@ -29,14 +29,14 @@ const routes = [
     output: "index.html",
     title: "Cravelle, the B2B bridge into Europe.",
     description:
-      "Cravelle is a Poland-based B2B trade and partnership company helping Arabic-speaking businesses, especially Egyptian exporters, connect with Europe through export support, commercial introductions, and market-entry coordination.",
+      "Cravelle is the Poland-based B2B bridge connecting Arabic-speaking suppliers, especially Egyptian exporters, with the European market through export support, commercial introductions, and market-entry coordination.",
   },
   {
     path: "/services",
     output: "services/index.html",
     title: "Services, Cravelle",
     description:
-      "Three focused services: export and market entry support, B2B partnership facilitation, and hospitality and premium supplier sourcing.",
+      "Three focused services from Cravelle: export and market entry support, B2B partnership facilitation, and hospitality and premium supplier sourcing.",
   },
   {
     path: "/sectors",
@@ -50,7 +50,7 @@ const routes = [
     output: "about/index.html",
     title: "About, Cravelle",
     description:
-      "Cravelle is a Poland-based B2B trade and partnership company helping Arabic-speaking businesses, especially Egyptian exporters, connect with Europe.",
+      "Cravelle is the Poland-based B2B bridge connecting Arabic-speaking suppliers, especially Egyptian exporters, with the European market.",
   },
   {
     path: "/contact",
@@ -109,6 +109,17 @@ function replaceCanonical(html, url) {
   );
 }
 
+function inlineCss(html, distDir) {
+  const linkRe = /<link\s+rel="stylesheet"\s+crossorigin\s+href="(\/assets\/[^"]+\.css)"\s*\/?>/i;
+  const m = html.match(linkRe);
+  if (!m) return html;
+  const cssPath = path.join(distDir, m[1]);
+  if (!fs.existsSync(cssPath)) return html;
+  const css = fs.readFileSync(cssPath, "utf8");
+  const inline = `<style>${css}</style>`;
+  return html.replace(linkRe, inline);
+}
+
 async function main() {
   // 1. Confirm the SSR bundle exists.
   const serverEntry = path.join(serverDir, "entry-server.js");
@@ -128,7 +139,13 @@ async function main() {
   if (!fs.existsSync(templatePath)) {
     throw new Error(`Client template not found at ${templatePath}. Run "vite build" first.`);
   }
-  const template = fs.readFileSync(templatePath, "utf8");
+  let template = fs.readFileSync(templatePath, "utf8");
+
+  // Inline the small Vite-emitted CSS bundle directly into the document head
+  // and drop the render-blocking <link rel="stylesheet"> request. The bundle
+  // is ~5 KB gzip; bundling it into the HTML eliminates one round-trip on
+  // cold loads, which is the dominant LCP cost on slow mobile.
+  template = inlineCss(template, distDir);
 
   for (const route of routes) {
     // The 404 page is rendered through the catch-all route in App.

@@ -1,13 +1,10 @@
-import { m as motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { sectors } from "../content/site";
 import Disclaimer from "../components/Disclaimer";
 import CTASection from "../components/CTASection";
-import { useSafeInitial } from "../lib/animation";
 import { useSeo } from "../lib/seo";
 
 export default function Sectors() {
-  const initial = useSafeInitial({ opacity: 0, y: 12 });
   useSeo({
     title: "Sectors, Cravelle",
     description:
@@ -19,7 +16,7 @@ export default function Sectors() {
     <>
       <section className="border-b border-[color:var(--rule)] pt-32 md:pt-40">
         <div className="container-edge">
-          <div className="flex items-center justify-between font-mono text-[0.7rem] uppercase tracking-[0.2em] text-[color:var(--fg-mute)]">
+          <div className="flex items-center justify-between font-mono text-[0.7rem] uppercase tracking-[0.2em] text-[color:var(--fg-soft)]">
             <span>Sectors</span>
             <span>{sectors.length} categories</span>
           </div>
@@ -37,13 +34,9 @@ export default function Sectors() {
       <section className="container-edge py-20 md:py-28">
         <ul className="grid gap-px overflow-hidden border-l border-t border-[color:var(--rule)] md:grid-cols-2">
           {sectors.map((s, i) => (
-            <motion.li
+            <li
               key={s.id}
-              initial={initial}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.5, delay: Math.min(i * 0.05, 0.2), ease: [0.22, 0.61, 0.36, 1] }}
-              className="border-b border-r border-[color:var(--rule)] bg-[color:var(--bg)] p-7 md:p-10 md:last:col-span-2"
+              className="reveal border-b border-r border-[color:var(--rule)] bg-[color:var(--bg)] p-7 md:p-10 md:last:col-span-2"
             >
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[0.7rem] tracking-[0.18em] text-[color:var(--brass)]">
@@ -56,7 +49,7 @@ export default function Sectors() {
               <p className="mt-3 max-w-prose text-[15px] leading-[1.65] text-[color:var(--fg-soft)]">
                 {s.note}
               </p>
-            </motion.li>
+            </li>
           ))}
         </ul>
 

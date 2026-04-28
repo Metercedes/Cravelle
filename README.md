@@ -1,13 +1,16 @@
 # Cravelle
 
-Clear routes into Poland.
+The B2B bridge into Europe.
 
 This is the source code for [cravelle.co](https://cravelle.co), the public
-website of CRAVELLE sp. z o.o.
+website of Cravelle Sp. z o.o. — a Poland-based B2B bridge connecting
+Arabic-speaking suppliers, especially Egyptian exporters, with the European
+market through export support, commercial introductions, and market-entry
+coordination.
 
 The site is a small, fast, single-page React application built with Vite,
-TypeScript, Tailwind CSS, and Framer Motion. It is deployed to Netlify from
-the `dist/` build output.
+TypeScript, and Tailwind CSS. It is prerendered to static HTML at build time
+and deployed to Netlify from the `dist/` build output.
 
 ## Local development
 
@@ -17,7 +20,7 @@ npm run dev          # local dev server on http://localhost:3000
 npm run typecheck    # TypeScript only, no emit
 npm run lint         # ESLint flat-config across src/
 npm run build        # type-check + production build to dist/
-npm run preview      # preview the production build
+npm run preview      # preview the production build on http://localhost:4173
 ```
 
 Node 20.19.0 (matches `netlify.toml`).
@@ -38,25 +41,28 @@ public/                   static assets served as-is
   sitemap.xml
 src/
   components/
-    IntroReveal.tsx       centre split-reveal intro animation (homepage only, on cold load)
     Nav.tsx               top navigation, flips colour over data-on-dark sections
     Footer.tsx            footer with registry block
-    Hero.tsx              home hero
+    Hero.tsx              home hero (plain HTML, no animation library — LCP-safe)
     ServicePillars.tsx    three editorial service rows
     WhoWeHelp.tsx         audience grid
     Process.tsx           method (six steps)
     WhyCravelle.tsx       positioning grid
+    Gallery.tsx           atmosphere gallery section
     Disclaimer.tsx        scope-of-services disclaimer
     CTASection.tsx        bottom-of-page contact CTA (data-on-dark)
     ContactForm.tsx       intake form (Formspree)
     SectionHeader.tsx     editorial section header primitive
-  content/site.ts         all copy, registry data, service pillars, audiences, sectors
+  content/site.ts         all copy, registry data, service pillars, audiences, sectors, gallery
   lib/seo.ts              per-route title / description / canonical helper
+  lib/routes.ts           route metadata shared with the prerender script
   pages/                  routed pages (Home, Services, Sectors, About, Contact, Legal, NotFound)
-  styles/index.css        Tailwind layers + design tokens (CSS variables)
-  App.tsx                 router + scroll-to-top + Suspense
-  main.tsx                entry
-index.html                app shell (preconnects, JSON-LD organisation, theme bootstrap)
+  styles/index.css        Tailwind layers + design tokens + intro/gallery/reveal CSS
+  App.tsx                 router + scroll-to-top
+  main.tsx                entry; mounts the app and wires up the IntersectionObserver reveal
+  entry-server.tsx        SSR entry consumed by scripts/prerender.mjs
+index.html                app shell (theme bootstrap, JSON-LD, intro overlay markup)
+scripts/prerender.mjs     build-time SSR prerender; inlines critical CSS into each page
 tailwind.config.ts        design tokens (palette, typography, fluid type)
 vite.config.ts            Vite config with manual chunking
 eslint.config.js          ESLint flat config (TS + React Hooks + React Refresh)
@@ -64,14 +70,20 @@ netlify.toml              Netlify build, redirects, SPA rewrite
 public/_headers           security headers + cache-control
 ```
 
+## Naming convention
+
+- Marketing copy, headings, body text, navigation: **"Cravelle"**.
+- Legal, registry, footer entity row, intro overlay caption: **"Cravelle Sp. z o.o."**.
+- JSON-LD organization name: **"Cravelle Sp. z o.o."** (entity legal name).
+
 ## Brand mark
 
 The wing-wordmark is rendered through a CSS mask so the same source file
 inherits the current text colour. The mask source is
 `public/brand/wordmark.png` (a tight, alpha-only PNG). The `.brand-logo`
-utility in `src/styles/index.css` paints this mask with `currentColor`,
-which lets it work in light theme, dark theme, and over the dark
-`data-on-dark` CTA section without separate light/dark assets.
+utility paints this mask with `currentColor`, which lets it work in light
+theme, dark theme, and over the dark `data-on-dark` CTA section without
+separate light/dark assets.
 
 ## Content
 
@@ -79,12 +91,32 @@ All site copy is defined as structured TypeScript objects in
 `src/content/site.ts`. To translate the site, mirror the same shape per
 locale and select on `useParams` or a locale store at the App boundary.
 
-## Brand fonts
+## Typography
 
-- Headline serif: Fraunces. Body: Inter. Mono: JetBrains Mono. All loaded
-  from Google Fonts with `&display=swap` and preconnect.
-- Palette tokens live in `tailwind.config.ts` and as CSS variables in
-  `src/styles/index.css` (light + dark).
+The site uses pure system font stacks for performance — no Google Fonts are
+loaded. Tokens live in `:root` inside `src/styles/index.css`:
+
+- Headlines (`var(--font-serif)`): `ui-serif`, `Iowan Old Style`,
+  `Apple Garamond`, `Georgia`, `Cambria`, `Times New Roman`, serif.
+- Body (`var(--font-sans)`): `ui-sans-serif`, `system-ui`, `-apple-system`,
+  `Segoe UI`, `Roboto`, `Helvetica Neue`, `Arial`, sans-serif.
+- Mono labels (`var(--font-mono)`): `ui-monospace`, `SFMono-Regular`,
+  `SF Mono`, `Menlo`, `Consolas`, `Liberation Mono`, monospace.
+
+This eliminates the ~237 kB Google Fonts waterfall on cold loads.
+
+## Animation policy
+
+- The intro overlay is pure CSS keyframes plus a tiny inline script in
+  `index.html`. No animation library, no JS framework dependency.
+- Above-the-fold content (`Hero`) is plain HTML with no opacity/transform
+  initial states — the LCP element paints at full visibility on the first
+  frame.
+- Below-the-fold sections use the `.reveal` class plus an
+  `IntersectionObserver` hook in `main.tsx` for a soft scroll-in fade.
+  Initial state is gated by `html.js-ready`, so crawlers and JS-disabled
+  users see content immediately.
+- `prefers-reduced-motion` short-circuits both intro and reveal animations.
 
 ## Forms
 
@@ -94,17 +126,12 @@ front-end and does not set tracking cookies.
 
 ## Deployment (Netlify)
 
-The site is configured for Netlify out of the box.
-
 1. Connect the GitHub repository to a Netlify site.
 2. Build command: `npm run build` (already set in `netlify.toml`).
 3. Publish directory: `dist/` (already set).
 4. Node version: `20.19.0` (already set).
 5. The `[[redirects]]` block provides the SPA fallback `/* → /index.html`.
-6. `public/_headers` ships security headers and cache rules:
-   - HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy,
-     Permissions-Policy.
-   - 1-year immutable cache on `/assets/*` (Vite hashes filenames).
+6. `public/_headers` ships security headers and cache rules.
 
 No environment variables are required to run the site as configured.
 
@@ -113,7 +140,7 @@ No environment variables are required to run the site as configured.
 Confirmed against the official KRS Aktualny / Pełny export (April 2026):
 
 - Legal name: CRAVELLE SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ
-  (short form: CRAVELLE sp. z o.o.)
+  (short form: Cravelle Sp. z o.o.)
 - KRS: 0001224084 · NIP: 5253079394 · REGON: 544004650
 - KRS registered: 16 February 2026
 - Registered office: ul. Wiślana 8, 00-317 Warszawa, Poland

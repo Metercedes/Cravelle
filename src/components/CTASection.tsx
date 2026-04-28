@@ -6,7 +6,7 @@ export default function CTASection() {
     <section data-on-dark className="bg-[color:var(--fg)] py-24 text-[color:var(--bg)] md:py-28">
       <div className="container-edge">
         <div className="flex items-center justify-between font-mono text-[0.7rem] uppercase tracking-[0.2em] text-[color:var(--bg)]/80">
-          <span>05 / Contact</span>
+          <span>06 / Contact</span>
           <span className="hidden sm:inline">Warsaw, Poland</span>
         </div>
 
@@ -23,7 +23,7 @@ export default function CTASection() {
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-3 bg-brass px-6 py-3 text-sm font-medium tracking-wide text-obsidian transition-transform hover:translate-x-[2px]"
+                className="inline-flex items-center gap-3 bg-[color:var(--bg)] px-6 py-3 text-sm font-medium tracking-wide text-[color:var(--fg)] transition-transform hover:translate-x-[2px]"
               >
                 Send a trade inquiry
                 <span aria-hidden>→</span>

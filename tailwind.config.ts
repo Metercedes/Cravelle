@@ -25,7 +25,7 @@ const config: Config = {
         porcelain: "#F6F1E8",
         graphite: "#1C2228",
         baltic: "#244C5A",
-        brass: "#9A6F3E",
+        brass: "#855928",
         route: "#A8A29A",
         signal: "#5E7A66",
         ink: {

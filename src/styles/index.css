@@ -13,11 +13,22 @@
     --rule: rgba(28, 34, 40, 0.14);
     --rule-soft: rgba(28, 34, 40, 0.08);
     --accent: #244c5a;
-    --brass: #9a6f3e;
+    --brass: #855928;
     --signal: #5e7a66;
     --route: #a8a29a;
     --selection-bg: #244c5a;
     --selection-fg: #f6f1e8;
+    /*
+      Editorial system-font stacks. Switching off Google Fonts removes a
+      ~237 kB woff2 waterfall on cold loads, and these stacks render the
+      same layout cleanly on every modern OS.
+    */
+    --font-serif: ui-serif, "Iowan Old Style", "Apple Garamond", Georgia,
+      Cambria, "Times New Roman", Times, serif;
+    --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+      "Liberation Mono", monospace;
   }
 
   :root[data-theme="dark"] {
@@ -43,15 +54,15 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
-    /* Reserve space for the scrollbar so the IntroReveal toggling
-       overflow:hidden does not push content horizontally and trip CLS. */
+    /* Reserve space for the scrollbar so the intro overlay does not push
+       layout sideways while it is mounted. */
     scrollbar-gutter: stable;
   }
 
   body {
     background: var(--bg);
     color: var(--fg);
-    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-sans);
     font-size: 16px;
     line-height: 1.55;
     overflow-x: hidden;
@@ -68,7 +79,7 @@
   h4,
   h5,
   h6 {
-    font-family: "Fraunces", ui-serif, Georgia, serif;
+    font-family: var(--font-serif);
     font-weight: 400;
     color: var(--fg);
     text-wrap: balance;
@@ -115,12 +126,10 @@
     outline-offset: 3px;
     border-radius: 2px;
   }
-  /* Hide focus on mouse */
   :focus:not(:focus-visible) {
     outline: none;
   }
 
-  /* Form reset */
   input,
   textarea,
   select,
@@ -129,14 +138,12 @@
     color: inherit;
   }
 
-  /* Image defaults */
   img,
   svg {
     display: block;
     max-width: 100%;
   }
 
-  /* Scrollbar */
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -156,7 +163,8 @@
   }
 
   .eyebrow {
-    @apply font-mono text-[0.7rem] uppercase tracking-[0.18em] text-[color:var(--fg-mute)];
+    @apply font-mono text-[0.7rem] uppercase tracking-[0.18em];
+    color: var(--fg-soft);
   }
 
   .rule {
@@ -188,23 +196,42 @@
   }
 
   .corner-mark {
-    @apply absolute font-mono text-[0.65rem] uppercase tracking-[0.2em] text-[color:var(--fg-mute)];
+    @apply absolute font-mono text-[0.65rem] uppercase tracking-[0.2em];
+    color: var(--fg-soft);
   }
 
   .btn-primary {
-    @apply inline-flex items-center gap-3 bg-[color:var(--fg)] px-6 py-3 text-sm font-medium tracking-wide text-[color:var(--bg)] transition-colors duration-200 hover:bg-[color:var(--accent)] focus-visible:bg-[color:var(--accent)];
+    @apply inline-flex items-center gap-3 px-6 py-3 text-sm font-medium tracking-wide transition-colors duration-200;
+    background: var(--fg);
+    color: var(--bg);
+  }
+  .btn-primary:hover,
+  .btn-primary:focus-visible {
+    background: var(--accent);
   }
 
   .btn-ghost {
-    @apply inline-flex items-center gap-3 border border-[color:var(--rule)] bg-transparent px-6 py-3 text-sm font-medium tracking-wide text-[color:var(--fg)] transition-colors duration-200 hover:border-[color:var(--fg)] hover:bg-[color:var(--bg-soft)];
+    @apply inline-flex items-center gap-3 border bg-transparent px-6 py-3 text-sm font-medium tracking-wide transition-colors duration-200;
+    border-color: var(--rule);
+    color: var(--fg);
+  }
+  .btn-ghost:hover {
+    border-color: var(--fg);
+    background: var(--bg-soft);
   }
 
   .btn-link {
-    @apply inline-flex items-center gap-2 text-sm font-medium text-[color:var(--fg)] underline decoration-[color:var(--rule)] decoration-1 underline-offset-[6px] transition-colors hover:decoration-[color:var(--brass)];
+    @apply inline-flex items-center gap-2 text-sm font-medium underline decoration-1 underline-offset-[6px] transition-colors;
+    color: var(--fg);
+    text-decoration-color: var(--rule);
+  }
+  .btn-link:hover {
+    text-decoration-color: var(--brass);
   }
 
   .editorial-num {
-    @apply font-mono text-[0.7rem] uppercase tracking-[0.18em] text-[color:var(--fg-mute)];
+    @apply font-mono text-[0.7rem] uppercase tracking-[0.18em];
+    color: var(--fg-soft);
   }
 
   .arrow-after::after {
@@ -219,19 +246,26 @@
   }
 
   .field {
-    @apply block w-full appearance-none border border-[color:var(--rule)] bg-transparent px-4 py-3 text-[15px] text-[color:var(--fg)] outline-none transition-colors placeholder:text-[color:var(--fg-mute)] focus:border-[color:var(--accent)];
+    @apply block w-full appearance-none border bg-transparent px-4 py-3 text-[15px] outline-none transition-colors;
+    border-color: var(--rule);
+    color: var(--fg);
+  }
+  .field::placeholder {
+    color: var(--fg-mute);
+  }
+  .field:focus {
+    border-color: var(--accent);
   }
 
   .field-label {
-    @apply mb-2 block font-mono text-[0.7rem] uppercase tracking-[0.18em] text-[color:var(--fg-mute)];
+    @apply mb-2 block font-mono text-[0.7rem] uppercase tracking-[0.18em];
+    color: var(--fg-soft);
   }
 
   /* Brand mark.
-     Single mask source painted with currentColor, so the same file renders in
-     the light theme, the dark theme, and when the nav sits over a dark
-     section. The PNG carries the wordmark in its alpha channel; we ask
-     browsers to mask by alpha explicitly so the source intent is unambiguous,
-     with a white-luminance fallback for older engines. */
+     Single mask source painted with currentColor, so the same file renders
+     in light theme, dark theme, and over the dark CTA section. The PNG
+     carries the wing+wordmark in its alpha channel. */
   .brand-logo {
     display: inline-block;
     background-color: currentColor;
@@ -243,25 +277,206 @@
 }
 
 @layer utilities {
-  .text-fg {
-    color: var(--fg);
+  .text-fg { color: var(--fg); }
+  .text-fg-soft { color: var(--fg-soft); }
+  .text-fg-mute { color: var(--fg-mute); }
+  .bg-bg { background-color: var(--bg); }
+  .bg-bg-soft { background-color: var(--bg-soft); }
+  .border-rule { border-color: var(--rule); }
+  .text-balance { text-wrap: balance; }
+}
+
+/*
+  ─────────────────────────────────────────────────────────────────────
+  Intro overlay (homepage, cold load + refresh).
+  Pure CSS animation. The element is in index.html, not React; a tiny
+  inline script flips data-mode and removes the node when the animation
+  ends. No framer-motion, no JS animation library, no opacity-0 traps
+  on real page content (the overlay sits *above* the prerendered tree).
+  ─────────────────────────────────────────────────────────────────────
+*/
+#intro {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 0 1.5rem;
+  pointer-events: none;
+  background: var(--bg);
+  color: var(--fg);
+}
+#intro[hidden] { display: none; }
+#intro .intro-lockup {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  will-change: transform, opacity;
+}
+#intro .intro-mark {
+  display: inline-block;
+  width: 5rem;
+  aspect-ratio: 434 / 556;
+  background-color: currentColor;
+  -webkit-mask: url("/brand/wordmark.png") center / contain no-repeat;
+  mask: url("/brand/wordmark.png") center / contain no-repeat;
+  -webkit-mask-mode: alpha;
+  mask-mode: alpha;
+}
+@media (min-width: 640px)  { #intro .intro-mark { width: 6rem;  } }
+@media (min-width: 768px)  { #intro .intro-mark { width: 7rem;  } }
+#intro .intro-caption {
+  white-space: nowrap;
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  letter-spacing: -0.005em;
+  padding-bottom: 0.5rem;
+  opacity: 0;
+}
+@media (min-width: 640px) { #intro .intro-caption { font-size: 1.05rem; } }
+@media (min-width: 768px) { #intro .intro-caption { font-size: 1.15rem; } }
+
+/* Full-sequence mode (no reduced motion). */
+#intro[data-mode="play"] .intro-lockup {
+  animation:
+    intro-shift 1.85s cubic-bezier(0.22, 0.61, 0.36, 1) forwards,
+    intro-rise 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) 1.85s forwards;
+}
+#intro[data-mode="play"] .intro-caption {
+  animation: intro-caption-in 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) 0.85s forwards;
+}
+#intro[data-mode="play"] {
+  animation: intro-overlay-out 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) 1.85s forwards;
+}
+
+/* Reduced-motion mode: no movement, brief soft fade only. */
+#intro[data-mode="reduce"] .intro-lockup {
+  opacity: 1;
+}
+#intro[data-mode="reduce"] {
+  animation: intro-overlay-out 0.4s ease 0.4s forwards;
+}
+
+@keyframes intro-shift {
+  0%   { transform: translate3d(0, 0, 0); opacity: 1; }
+  46%  { transform: translate3d(0, 0, 0); opacity: 1; }
+  100% { transform: translate3d(-8%, 0, 0); opacity: 1; }
+}
+@keyframes intro-rise {
+  0%   { transform: translate3d(-8%, 0, 0); opacity: 1; }
+  100% { transform: translate3d(-8%, -18px, 0); opacity: 0; }
+}
+@keyframes intro-caption-in {
+  0%   { opacity: 0; transform: translate3d(0, 4px, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes intro-overlay-out {
+  to { opacity: 0; visibility: hidden; }
+}
+
+/*
+  ─────────────────────────────────────────────────────────────────────
+  Below-fold reveal: very light IntersectionObserver-driven fade-up,
+  used by .reveal elements. Initial state stays visible for crawlers
+  and JS-disabled users; only when the .js-ready class is present on
+  <html> do the elements start hidden, then fade in on scroll.
+  ─────────────────────────────────────────────────────────────────────
+*/
+html.js-ready .reveal {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+  transition: opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform;
+}
+html.js-ready .reveal.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  html.js-ready .reveal,
+  html.js-ready .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
-  .text-fg-soft {
-    color: var(--fg-soft);
-  }
-  .text-fg-mute {
-    color: var(--fg-mute);
-  }
-  .bg-bg {
-    background-color: var(--bg);
-  }
-  .bg-bg-soft {
-    background-color: var(--bg-soft);
-  }
-  .border-rule {
-    border-color: var(--rule);
-  }
-  .text-balance {
-    text-wrap: balance;
-  }
+}
+
+/*
+  ─────────────────────────────────────────────────────────────────────
+  Mobile menu (Nav.tsx) panel transition. Replaces the prior
+  AnimatePresence motion.div with a CSS transition, so framer-motion
+  is no longer needed for the navigation either.
+  ─────────────────────────────────────────────────────────────────────*/
+.menu-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.25s cubic-bezier(0.22, 0.61, 0.36, 1),
+              opacity 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.menu-panel[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+.menu-panel > .menu-panel-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+/*
+  ─────────────────────────────────────────────────────────────────────
+  Gallery section.
+  Editorial card set with inline SVG covers. No raster downloads, no
+  layout shift (each card has fixed aspect-ratio).
+  ─────────────────────────────────────────────────────────────────────*/
+.gallery-grid {
+  display: grid;
+  gap: 1px;
+  border-top: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+  background: var(--rule);
+}
+@media (min-width: 640px) { .gallery-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .gallery-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+.gallery-card {
+  position: relative;
+  background: var(--bg);
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+}
+.gallery-card .gallery-cover {
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  display: block;
+  background: var(--bg-soft);
+}
+.gallery-card .gallery-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--fg-soft);
+}
+.gallery-card .gallery-title {
+  padding: 0.25rem 1.5rem 0.25rem;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.gallery-card .gallery-note {
+  padding: 0.5rem 1.5rem 1.5rem;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--fg-soft);
+  max-width: 56ch;
 }
