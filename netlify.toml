@@ -23,6 +23,52 @@
 [build.processing.images]
   compress = true
 
+# Canonical domain enforcement (apex chosen as primary).
+#
+# JSON-LD, canonical, og:url, sitemap, and robots all reference the apex
+# form (https://cravelle.co). These rules collapse the www host into the
+# apex so search engines cannot index two copies of the same page.
+#
+# Host-scoped rules must precede the SPA fallback below — Netlify uses
+# first-match-wins, and the SPA rewrite would otherwise swallow them.
+#
+# These www rules are safe to keep enabled pre-cutover: they only fire
+# for requests with Host: www.cravelle.co, which doesn't resolve to
+# Netlify until DNS is pointed.
+
+[[redirects]]
+  from = "https://www.cravelle.co/*"
+  to = "https://cravelle.co/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.cravelle.co/*"
+  to = "https://cravelle.co/:splat"
+  status = 301
+  force = true
+
+# netlify.app → apex 301 — DO NOT ENABLE UNTIL cravelle.co IS LIVE.
+#
+# Enabling these before DNS cutover would 301 the only working URL
+# (cravelle.netlify.app) to a domain that does not yet resolve, taking
+# the temporary site offline. After cravelle.co resolves with HTTPS,
+# Netlify's "primary domain" setting in the dashboard already auto-301s
+# netlify.app → primary, so these explicit rules are belt-and-suspenders
+# that you can uncomment if you want the rule pinned in source.
+#
+# [[redirects]]
+#   from = "https://cravelle.netlify.app/*"
+#   to = "https://cravelle.co/:splat"
+#   status = 301
+#   force = true
+#
+# [[redirects]]
+#   from = "http://cravelle.netlify.app/*"
+#   to = "https://cravelle.co/:splat"
+#   status = 301
+#   force = true
+
 # Single-page app fallback for client-side routing
 [[redirects]]
   from = "/*"
