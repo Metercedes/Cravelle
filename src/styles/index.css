@@ -317,7 +317,7 @@
 #intro .intro-mark {
   display: inline-block;
   width: 6rem;
-  aspect-ratio: 512 / 386;
+  aspect-ratio: 512 / 294;
   background-color: currentColor;
   -webkit-mask: url("/brand/logo-mark.png") center / contain no-repeat;
   mask: url("/brand/logo-mark.png") center / contain no-repeat;
