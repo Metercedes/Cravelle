@@ -17,12 +17,6 @@
     <link rel="alternate icon" href="/brand/logo.png" type="image/png" />
     <link rel="apple-touch-icon" href="/brand/logo.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <!--
-      Splash mark used by the homepage intro overlay. Prefetched (not
-      preloaded) so it is fetched off the critical path while keeping the
-      connection warm for the inline CSS/HTML.
-    -->
-    <link rel="prefetch" as="image" href="/brand/logo-dark.svg" type="image/svg+xml" />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://cravelle.co/" />
@@ -116,8 +110,8 @@
     -->
     <div id="intro" hidden aria-hidden="true">
       <div class="intro-lockup">
-        <img class="intro-mark" src="/brand/logo-dark.svg" alt="" width="176" height="176" decoding="async" />
-        <span class="intro-caption"><span class="intro-caption-text">Cravelle</span></span>
+        <span class="intro-mark" role="img" aria-label="Cravelle"></span>
+        <span class="intro-caption">Cravelle</span>
       </div>
     </div>
     <script>

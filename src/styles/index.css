@@ -351,19 +351,18 @@
   display: block;
   width: 7rem;
   height: 7rem;
-  object-fit: contain;
-  /* Hint the rasteriser that this image will be transformed/animated; keeps
-     the SVG-with-embedded-raster sharp during the scale-in. */
-  will-change: transform, opacity;
-  image-rendering: auto;
+  /* Wing-only mark painted with currentColor through a CSS mask. The PNG is
+     ~9 kB (gray + alpha). Painting via mask means the same file works on
+     light and dark themes without a filter hack and without re-downloading
+     theme variants. */
+  background-color: currentColor;
+  -webkit-mask: url("/brand/logo-mark.png") center / contain no-repeat;
+  mask: url("/brand/logo-mark.png") center / contain no-repeat;
+  -webkit-mask-mode: alpha;
+  mask-mode: alpha;
 }
 @media (min-width: 640px)  { #intro .intro-mark { width: 9rem;  height: 9rem;  } }
 @media (min-width: 768px)  { #intro .intro-mark { width: 11rem; height: 11rem; } }
-/* Logo ships as the dark-theme variant (white on transparent). On light
-   theme we invert it so the wing reads dark on the cream background. */
-:root[data-theme="light"] #intro .intro-mark {
-  filter: invert(1);
-}
 #intro .intro-caption {
   display: inline-block;
   white-space: nowrap;
@@ -372,61 +371,52 @@
   letter-spacing: -0.005em;
   color: var(--fg);
 }
-#intro .intro-caption-text {
-  display: inline-block;
-}
 @media (min-width: 640px) { #intro .intro-caption { font-size: 1.45rem; } }
 @media (min-width: 768px) { #intro .intro-caption { font-size: 1.65rem; } }
 
 /* Full-sequence mode (no reduced motion).
-   - Mark fades + scales in (smooth ease-out, no overshoot).
-   - Caption "prints" left→right via clip-path while softly fading in.
-   - Whole lockup rises and the overlay fades out. */
-#intro[data-mode="play"] .intro-mark {
-  opacity: 0;
-  transform: scale(0.94);
-  animation: intro-mark-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
-}
-#intro[data-mode="play"] .intro-caption {
-  opacity: 0;
-  animation: intro-caption-fade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
-}
-#intro[data-mode="play"] .intro-caption-text {
-  clip-path: inset(0 100% 0 0);
-  animation: intro-caption-print 0.85s cubic-bezier(0.65, 0, 0.35, 1) 0.55s forwards;
-}
+   Single keyframe per element, opacity + transform only — both composited
+   properties. Per-keyframe animation-timing-function gives a soft ease-in
+   on entry and a different ease-out on exit while the browser still treats
+   it as one animation, which keeps the non-composited audit clean. */
 #intro[data-mode="play"] .intro-lockup {
-  animation: intro-rise 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) 1.8s forwards;
+  opacity: 0;
+  transform: translate3d(0, 6px, 0) scale(0.985);
+  animation: intro-lockup 2.4s 0.1s forwards;
 }
 #intro[data-mode="play"] {
-  animation: intro-overlay-out 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) 1.85s forwards;
+  animation: intro-overlay-out 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) 1.9s forwards;
 }
 
 /* Reduced-motion mode: no movement, brief soft fade only. */
-#intro[data-mode="reduce"] .intro-lockup,
-#intro[data-mode="reduce"] .intro-mark,
-#intro[data-mode="reduce"] .intro-caption,
-#intro[data-mode="reduce"] .intro-caption-text {
+#intro[data-mode="reduce"] .intro-lockup {
   opacity: 1;
   transform: none;
-  clip-path: none;
 }
 #intro[data-mode="reduce"] {
   animation: intro-overlay-out 0.4s ease 0.4s forwards;
 }
 
-@keyframes intro-mark-in {
-  to { opacity: 1; transform: scale(1); }
-}
-@keyframes intro-caption-fade {
-  to { opacity: 1; }
-}
-@keyframes intro-caption-print {
-  to { clip-path: inset(0 0 0 0); }
-}
-@keyframes intro-rise {
-  0%   { transform: translate3d(0, 0, 0); opacity: 1; }
-  100% { transform: translate3d(0, -18px, 0); opacity: 0; }
+@keyframes intro-lockup {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0) scale(0.985);
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  37% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    animation-timing-function: linear;
+  }
+  73% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -14px, 0) scale(1);
+  }
 }
 @keyframes intro-overlay-out {
   to { opacity: 0; }
