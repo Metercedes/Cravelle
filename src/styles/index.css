@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+    color-scheme: light;
     --bg: #f6f1e8;
     --bg-soft: #ece7dd;
     --bg-elev: #ffffff;
@@ -32,6 +33,7 @@
   }
 
   :root[data-theme="dark"] {
+    color-scheme: dark;
     --bg: #080a0d;
     --bg-soft: #10151a;
     --bg-elev: #141a20;
@@ -246,15 +248,44 @@
   }
 
   .field {
-    @apply block w-full appearance-none border bg-transparent px-4 py-3 text-[15px] outline-none transition-colors;
+    @apply block w-full appearance-none border px-4 py-3 text-[15px] outline-none transition-colors;
+    background-color: var(--bg);
     border-color: var(--rule);
+    color: var(--fg);
+  }
+  /* Explicit colours so the native <option> dropdown stays readable in both
+     themes — Chromium and Firefox render <option> with OS chrome that ignores
+     transparent parents and only follows color-scheme + explicit colours. */
+  select.field {
+    background-color: var(--bg);
+    color: var(--fg);
+  }
+  select.field option {
+    background-color: var(--bg);
+    color: var(--fg);
+  }
+  select.field option:disabled {
+    color: var(--fg-mute);
+  }
+  textarea.field {
+    background-color: var(--bg);
     color: var(--fg);
   }
   .field::placeholder {
     color: var(--fg-mute);
+    opacity: 1;
   }
   .field:focus {
     border-color: var(--accent);
+  }
+  /* Suppress Chrome's autofill yellow wash, which otherwise paints white text
+     on a near-white background in dark mode. */
+  .field:-webkit-autofill,
+  .field:-webkit-autofill:hover,
+  .field:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--fg);
+    -webkit-box-shadow: 0 0 0 1000px var(--bg) inset;
+    caret-color: var(--fg);
   }
 
   .field-label {
@@ -331,20 +362,16 @@
   font-family: var(--font-serif);
   font-size: 1.25rem;
   letter-spacing: -0.005em;
-  opacity: 0;
 }
 @media (min-width: 640px) { #intro .intro-caption { font-size: 1.45rem; } }
 @media (min-width: 768px) { #intro .intro-caption { font-size: 1.65rem; } }
 
-/* Full-sequence mode (no reduced motion). */
+/* Full-sequence mode (no reduced motion). One lockup, one motion. */
 #intro[data-mode="play"] .intro-lockup {
-  animation: intro-rise 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) 1.85s forwards;
-}
-#intro[data-mode="play"] .intro-caption {
-  animation: intro-caption-in 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) 0.85s forwards;
+  animation: intro-rise 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) 1.6s forwards;
 }
 #intro[data-mode="play"] {
-  animation: intro-overlay-out 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) 1.85s forwards;
+  animation: intro-overlay-out 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) 1.65s forwards;
 }
 
 /* Reduced-motion mode: no movement, brief soft fade only. */
@@ -358,10 +385,6 @@
 @keyframes intro-rise {
   0%   { transform: translate3d(0, 0, 0); opacity: 1; }
   100% { transform: translate3d(0, -18px, 0); opacity: 0; }
-}
-@keyframes intro-caption-in {
-  0%   { opacity: 0; transform: translate3d(0, 4px, 0); }
-  100% { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 @keyframes intro-overlay-out {
   to { opacity: 0; }
@@ -422,7 +445,17 @@ html.js-ready .reveal.is-visible {
   Gallery section.
   Editorial card set with inline SVG covers. No raster downloads, no
   layout shift (each card has fixed aspect-ratio).
+
+  content-visibility: auto skips the browser's layout/paint pass for the
+  gallery while it's offscreen, which removes ~6 inline SVGs from the
+  initial render budget and gives mobile LCP a stable green run. The
+  contain-intrinsic-size matches the rendered grid so scroll position is
+  preserved and CLS stays at 0.
   ─────────────────────────────────────────────────────────────────────*/
+#gallery {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 1600px;
+}
 .gallery-grid {
   display: grid;
   gap: 1px;

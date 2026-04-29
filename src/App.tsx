@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
+import { useRouteReveal } from "./lib/reveal";
 // Pages are imported eagerly so the SSR / prerender pass renders real HTML
 // for every route synchronously. The site is small enough that the bundle
 // size impact is negligible, and Vite still tree-shakes unused code.
@@ -23,6 +24,10 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  // Re-scan for new .reveal nodes after every client-side navigation so
+  // pages reached via the navbar (e.g. /services) reveal correctly without
+  // requiring a hard refresh.
+  useRouteReveal();
   return (
     <>
       <Nav />

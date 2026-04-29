@@ -30,31 +30,20 @@ export default function About() {
           <div className="md:col-span-7">
             <div className="space-y-7 text-[16px] leading-[1.75] text-[color:var(--fg-soft)]">
               <p>
-                Cravelle is a Poland-based B2B trade and partnership company. We help
-                Arabic-speaking businesses, especially Egyptian exporters, connect with Europe
-                through export support, commercial introductions, and market-entry coordination.
+                Cravelle is a Poland-based B2B company helping Arabic-speaking businesses,
+                especially Egyptian exporters, connect with Europe through export support,
+                commercial introductions, and market-entry coordination.
               </p>
               <p>
-                We exist because the conversation between an Arabic-speaking supplier and a
-                European buyer is rarely just a translation problem. It is a commercial
-                coordination problem: matching the right product, the right channel, and the
-                right people, then staying on the thread until the relationship is operating.
+                The conversation between an Arabic-speaking supplier and a European buyer is
+                rarely just translation. It is commercial coordination — matching product,
+                channel, and people, then staying on the thread until the relationship is
+                operating.
               </p>
               <p>
-                We serve exporters, suppliers, hospitality businesses, and the European partners
-                who buy from them. Poland is our base because it sits inside the European single
-                market with a sensible cost structure and direct routes across the continent.
-              </p>
-              <p>
-                We are not a law firm, an accountancy practice, a customs broker, or a marketing
-                agency. We are a commercial connector. Where a step requires a licensed
-                professional, we brief the qualified external practitioner contracted by the
-                relevant party and stay on the thread.
-              </p>
-              <p>
-                We work selectively. We turn down briefs that fall outside our scope or depend on
-                outcomes we cannot influence. It is the only honest way to remain useful to the
-                companies we do represent.
+                We are not a law firm, an accountancy practice, or a customs broker. Where a
+                step needs a licensed professional, we brief the qualified external practitioner
+                contracted by the relevant party.
               </p>
             </div>
 

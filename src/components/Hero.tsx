@@ -22,9 +22,8 @@ export default function Hero() {
             </h1>
 
             <p className="mt-8 max-w-2xl text-[1.05rem] leading-[1.6] text-[color:var(--fg-soft)] md:text-[1.15rem]">
-              Cravelle helps Arabic-speaking businesses, especially Egyptian exporters, connect
-              with Europe through export support, commercial introductions, and market-entry
-              coordination.
+              Export support, commercial introductions, and market-entry coordination for
+              Arabic-speaking suppliers entering Europe.
             </p>
 
             <div className="mt-10 flex flex-wrap items-center gap-3">

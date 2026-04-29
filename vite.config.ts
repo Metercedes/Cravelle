@@ -7,6 +7,12 @@ export default defineConfig({
     outDir: "dist",
     sourcemap: false,
     cssCodeSplit: true,
+    // Drop the auto-emitted <link rel="modulepreload"> tags. They burn
+    // ~70 KB of bandwidth in parallel with the prerendered HTML on simulated
+    // slow 4G, pushing FCP/LCP above the green thresholds. Hydration kicks
+    // in slightly later, but the first paint is from the SSR markup so the
+    // perceived speed is unchanged.
+    modulePreload: false,
     rollupOptions: {
       output: {
         manualChunks(id) {

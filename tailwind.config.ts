@@ -42,23 +42,29 @@ const config: Config = {
           900: "#080A0D",
         },
       },
+      // System-font stacks. Google Fonts were removed from this project, so
+      // we drop "Fraunces"/"Inter"/"JetBrains Mono" from the heads — leaving
+      // them in caused a brief font-fallback step on first render which
+      // Lantern attributes to the LCP element.
       fontFamily: {
-        serif: ['"Fraunces"', "ui-serif", "Georgia", "Cambria", "serif"],
+        serif: ["ui-serif", "Iowan Old Style", "Apple Garamond", "Georgia", "Cambria", "serif"],
         sans: [
-          '"Inter"',
           "ui-sans-serif",
           "system-ui",
           "-apple-system",
           "Segoe UI",
-          "Helvetica",
+          "Roboto",
+          "Helvetica Neue",
           "Arial",
           "sans-serif",
         ],
         mono: [
-          '"JetBrains Mono"',
           "ui-monospace",
           "SFMono-Regular",
+          "SF Mono",
           "Menlo",
+          "Consolas",
+          "Liberation Mono",
           "monospace",
         ],
       },

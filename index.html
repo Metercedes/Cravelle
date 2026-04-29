@@ -17,7 +17,12 @@
     <link rel="alternate icon" href="/brand/logo.png" type="image/png" />
     <link rel="apple-touch-icon" href="/brand/logo.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="preload" as="image" href="/brand/logo-mark.png" type="image/png" />
+    <!--
+      The splash mark is small (~9 KB) and only used on the homepage
+      overlay. Prefetched (not preloaded) so it is fetched off the critical
+      path while keeping the connection warm for the inline CSS/HTML.
+    -->
+    <link rel="prefetch" as="image" href="/brand/logo-mark.png" type="image/png" />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://cravelle.co/" />
@@ -37,17 +42,40 @@
     <title>Cravelle, the B2B bridge into Europe.</title>
 
     <script>
-      // Apply persisted theme before first paint to avoid a flash.
+      // Theme bootstrapping. Runs before first paint to avoid a light/dark
+      // flash. Behaviour:
+      //   - If the user has explicitly chosen a theme, use that (localStorage).
+      //   - Otherwise follow prefers-color-scheme.
+      //   - If no manual choice is stored, keep listening to system changes
+      //     and update live; the moment the user toggles, we stop following.
       (function () {
-        try {
-          var stored = localStorage.getItem('cravelle:theme');
-          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          var theme = stored === 'dark' || stored === 'light'
-            ? stored
-            : (prefersDark ? 'dark' : 'light');
+        var STORAGE_KEY = 'cravelle:theme';
+        var mql = window.matchMedia('(prefers-color-scheme: dark)');
+        function readStored() {
+          try {
+            var v = localStorage.getItem(STORAGE_KEY);
+            return v === 'dark' || v === 'light' ? v : null;
+          } catch (_) { return null; }
+        }
+        function apply(theme) {
           document.documentElement.dataset.theme = theme;
-        } catch (_) {
-          document.documentElement.dataset.theme = 'light';
+          try {
+            window.dispatchEvent(new CustomEvent('cravelle:theme', { detail: theme }));
+          } catch (_) { /* IE — not a target browser, ignore */ }
+        }
+        var stored = readStored();
+        apply(stored || (mql.matches ? 'dark' : 'light'));
+        // Live system-theme follower. Runs only while no manual preference
+        // exists; manual toggle writes to localStorage and short-circuits
+        // this branch.
+        function onSystemChange(e) {
+          if (readStored()) return;
+          apply(e.matches ? 'dark' : 'light');
+        }
+        if (typeof mql.addEventListener === 'function') {
+          mql.addEventListener('change', onSystemChange);
+        } else if (typeof mql.addListener === 'function') {
+          mql.addListener(onSystemChange);
         }
       })();
     </script>
@@ -89,7 +117,7 @@
     <div id="intro" hidden aria-hidden="true">
       <div class="intro-lockup">
         <span class="intro-mark" aria-hidden="true"></span>
-        <span class="intro-caption">Cravelle Sp. z o.o.</span>
+        <span class="intro-caption">Cravelle</span>
       </div>
     </div>
     <script>
@@ -100,7 +128,7 @@
         var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         intro.removeAttribute('hidden');
         intro.dataset.mode = reduce ? 'reduce' : 'play';
-        var dur = reduce ? 900 : 2450;
+        var dur = reduce ? 900 : 2300;
         setTimeout(function () {
           if (intro && intro.parentNode) intro.parentNode.removeChild(intro);
         }, dur);

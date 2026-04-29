@@ -16,9 +16,8 @@ export default function CTASection() {
               Talk to Cravelle.
             </h2>
             <p className="mt-6 max-w-2xl text-[15.5px] leading-[1.65] text-[color:var(--bg)]/70">
-              Send a short brief: country of origin, product or sector, and what you want to do
-              in Europe. We reply within two working days and tell you plainly whether we are
-              the right counterpart.
+              Send a short brief — country, product or sector, and what you want to do in
+              Europe. We reply within two working days.
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <Link

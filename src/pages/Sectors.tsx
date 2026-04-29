@@ -25,8 +25,8 @@ export default function Sectors() {
             Narrow sectors. Real commercial knowledge.
           </h1>
           <p className="mt-8 max-w-2xl text-[1.05rem] leading-[1.6] text-[color:var(--fg-soft)]">
-            Cravelle stays focused on a small set of categories where Egypt and the wider
-            Arabic-speaking market have credible supply, and where European buyers have real demand.
+            A small set of categories where Egypt and the wider region have credible supply —
+            and European buyers have real demand.
           </p>
         </div>
       </section>

@@ -54,17 +54,15 @@ export const servicePillars: ServicePillar[] = [
     title: "Export and Market Entry Support",
     shortTitle: "Export and Market Entry",
     forWhom:
-      "Arabic-speaking exporters, especially Egyptian producers, who want to enter Poland or wider Europe.",
+      "Arabic-speaking exporters, especially Egyptian producers, entering Poland or wider Europe.",
     whatWeDo: [
-      "Market-entry coordination for the product or category",
-      "Buyer communication in clear written English",
+      "Market-entry coordination by product or category",
       "Commercial introductions to qualified European counterparties",
-      "Poland-side representation for meetings, visits, and follow-up",
+      "Poland-side representation for meetings and follow-up",
       "Process guidance through the practical next steps",
-      "Practical support that keeps a real opportunity moving",
     ],
     outcome:
-      "A documented entry plan, named European counterparties, and a single point of contact in Warsaw.",
+      "A documented entry plan, named counterparties, and a single point of contact in Warsaw.",
     cta: "Discuss an export opportunity",
   },
   {
@@ -73,17 +71,15 @@ export const servicePillars: ServicePillar[] = [
     title: "B2B Partnership Facilitation",
     shortTitle: "B2B Partnerships",
     forWhom:
-      "Business-to-business relationships that need a trusted connector between an Arabic-speaking party and a European buyer or supplier.",
+      "Relationships that need a trusted connector between an Arabic-speaking party and a European buyer or supplier.",
     whatWeDo: [
-      "Arranging meetings between qualified parties",
-      "Supplier sourcing inside and outside the European Union",
-      "Buyer and supplier introductions with written context for both sides",
-      "Negotiation support during commercial conversations",
-      "Communication support across language and time zone",
+      "Buyer and supplier introductions with written context",
+      "Supplier sourcing inside and outside the EU",
+      "Negotiation and communication support across languages",
       "Ongoing account coordination once a relationship is live",
     ],
     outcome:
-      "A working B2B relationship with a clear cadence, recorded conversations, and a named coordinator.",
+      "A working B2B relationship with a clear cadence and a named coordinator.",
     cta: "Start a B2B introduction",
   },
   {
@@ -92,16 +88,15 @@ export const servicePillars: ServicePillar[] = [
     title: "Hospitality and Premium Supplier Sourcing",
     shortTitle: "Hospitality Sourcing",
     forWhom:
-      "Hotels, lounges, restaurants, hospitality groups, and selected premium venues that need specialist supplier connections.",
+      "Hotels, lounges, restaurants, and selected premium venues that need specialist supplier connections.",
     whatWeDo: [
-      "Hospitality procurement support for defined categories",
+      "Procurement support for defined hospitality categories",
       "Premium supplier introductions in Europe and beyond",
-      "Commercial partnerships between venues and selected suppliers",
+      "Commercial partnerships between venues and suppliers",
       "Training coordination through qualified external trainers",
-      "Supplier relationship building and ongoing follow-through",
     ],
     outcome:
-      "A short list of vetted hospitality suppliers, scheduled introductions, and a structured handover.",
+      "A short list of vetted suppliers, scheduled introductions, and a structured handover.",
     cta: "Send a hospitality brief",
   },
 ];
@@ -110,27 +105,27 @@ export const audiences = [
   {
     id: "egyptian-exporters",
     label: "Egyptian exporters",
-    note: "Producers and trading houses ready to place product into Poland and the European market.",
+    note: "Producers and trading houses ready for Poland and the wider EU.",
   },
   {
     id: "arabic-suppliers",
     label: "Arabic-speaking suppliers",
-    note: "Suppliers across the Arabic-speaking world looking for a credible European counterpart.",
+    note: "Suppliers seeking a credible European counterpart.",
   },
   {
     id: "hospitality",
     label: "Hospitality businesses",
-    note: "Hotels, lounges, restaurants, and venues sourcing specialist suppliers and procurement support.",
+    note: "Hotels, lounges, restaurants, and venues sourcing specialist suppliers.",
   },
   {
     id: "european-buyers",
     label: "European buyers",
-    note: "Polish and EU buyers looking for verified supply from Egypt and the wider Arabic-speaking market.",
+    note: "Polish and EU buyers seeking verified supply from Egypt and the wider region.",
   },
   {
     id: "b2b-partners",
     label: "B2B partners",
-    note: "Companies on either side that need a trusted connector to manage the commercial conversation.",
+    note: "Companies on either side needing a trusted commercial connector.",
   },
 ];
 
@@ -166,59 +161,59 @@ export const processSteps = [
   {
     n: "01",
     title: "Understand the opportunity",
-    body: "A short written brief, a call, and a clear note on what success looks like and what is out of scope.",
+    body: "A short brief, one call, a clear note on success and on scope.",
   },
   {
     n: "02",
     title: "Verify the commercial direction",
-    body: "We confirm the demand, the price logic, the counterparty profile, and any obvious blockers before work begins.",
+    body: "We confirm demand, price logic, counterparty profile, and obvious blockers.",
   },
   {
     n: "03",
     title: "Prepare outreach",
-    body: "Adapted introductions, written context for both sides, and the practical materials a buyer or supplier expects.",
+    body: "Adapted introductions and written context for both sides.",
   },
   {
     n: "04",
     title: "Connect with the relevant parties",
-    body: "Introductions are direct, named, and accompanied by a written context note for both sides.",
+    body: "Direct, named introductions with a written context note for both sides.",
   },
   {
     n: "05",
     title: "Coordinate meetings and follow-up",
-    body: "We run the cadence, the minutes, and the action list. Nothing falls between languages or time zones.",
+    body: "We run the cadence, the minutes, and the action list.",
   },
   {
     n: "06",
     title: "Hand off to qualified professionals",
-    body: "When a step requires a lawyer, accountant, customs agent, or banker, we brief them and stay on the thread.",
+    body: "When a step needs a lawyer, accountant, or customs agent, we brief them and stay on the thread.",
   },
 ];
 
 export const whyCravelle = {
   eyebrow: "Why Cravelle",
   heading:
-    "A focused B2B bridge between Arabic-speaking suppliers and European buyers, anchored in Poland.",
+    "A focused B2B bridge into Europe, anchored in Poland.",
   points: [
     {
       title: "Bilingual and cross-cultural",
-      body: "Working English and Arabic, with practical understanding of how Egyptian and European parties actually transact.",
+      body: "English and Arabic. Practical understanding of how Egyptian and European parties transact.",
     },
     {
       title: "Poland-based presence",
-      body: "A real address, a named counterpart, and the ability to attend meetings and follow up locally.",
+      body: "A real Warsaw address, a named counterpart, in-person follow-up.",
     },
     {
       title: "Practical commercial coordination",
-      body: "Written briefs, named counterparties, scheduled calls, and a clean record of what was agreed.",
+      body: "Written briefs, named counterparties, a clean record of what was agreed.",
     },
     {
       title: "Real business follow-through",
-      body: "Introductions are not the end of the work. We stay on the thread until the relationship is operating.",
+      body: "We stay on the thread until the relationship is operating.",
     },
     {
       title: "Focused B2B positioning",
-      body: "We do one thing: move the right product, through the right channel, with the right people, into Europe.",
+      body: "One thing: the right product, the right channel, the right people, into Europe.",
     },
   ],
 };
@@ -244,7 +239,7 @@ export const footerLinks = [
 export const formIntake = {
   heading: "Talk to Cravelle.",
   intro:
-    "We respond within two working days. Brief replies are normal. We ask for written context first so the call is useful for both sides.",
+    "We reply within two working days. Send written context first so the call is useful for both sides.",
   fields: {
     name: "Name",
     company: "Company",

@@ -39,7 +39,7 @@ const sections = [
     id: "cookies",
     title: "5. Cookies and analytics",
     body: [
-      "This website does not set marketing or tracking cookies. A localStorage entry may be used to remember the theme preference you choose. The intro animation does not set or read localStorage, sessionStorage, or cookies.",
+      "This website does not set marketing or tracking cookies. By default it follows your operating system's light or dark appearance through the prefers-color-scheme media query, with no storage involved. A single localStorage entry (cravelle:theme) is written only if you manually toggle the theme; it stores your explicit preference and overrides the system setting on later visits. No other localStorage, sessionStorage, or cookies are set.",
       "If we introduce privacy-conscious analytics in future, we will update this page and, where required, request consent.",
     ],
   },

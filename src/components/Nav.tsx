@@ -24,6 +24,12 @@ export default function Nav() {
   useEffect(() => {
     const t = (document.documentElement.dataset.theme as "light" | "dark" | undefined) ?? "light";
     setTheme(t);
+    const onTheme = (e: Event) => {
+      const next = (e as CustomEvent<"light" | "dark">).detail;
+      if (next === "light" || next === "dark") setTheme(next);
+    };
+    window.addEventListener("cravelle:theme", onTheme as EventListener);
+    return () => window.removeEventListener("cravelle:theme", onTheme as EventListener);
   }, []);
 
   useEffect(() => {
@@ -90,7 +96,14 @@ export default function Nav() {
     setTheme(next);
     document.documentElement.dataset.theme = next;
     try {
+      // Manual toggle: persist the choice. The boot script's matchMedia
+      // listener will see this entry and stop following the system theme.
       localStorage.setItem("cravelle:theme", next);
+    } catch {
+      /* ignore */
+    }
+    try {
+      window.dispatchEvent(new CustomEvent("cravelle:theme", { detail: next }));
     } catch {
       /* ignore */
     }

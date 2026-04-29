@@ -38,8 +38,7 @@ export default function Services() {
           <div className="hairline-x mt-2" />
           <h1 className="mt-12 max-w-4xl font-serif text-display-xl">What Cravelle does.</h1>
           <p className="mt-8 max-w-2xl text-[1.05rem] leading-[1.6] text-[color:var(--fg-soft)]">
-            Three focused services for Arabic-speaking suppliers and the European partners who buy
-            from them. Each one is a defined commercial mandate with a clear outcome.
+            Three defined commercial mandates. Each one with a clear scope and a clear outcome.
           </p>
         </div>
       </section>
