@@ -351,13 +351,14 @@
   display: block;
   width: 7rem;
   height: 7rem;
-  /* Wing-only mark painted with currentColor through a CSS mask. The PNG is
-     ~9 kB (gray + alpha). Painting via mask means the same file works on
-     light and dark themes without a filter hack and without re-downloading
-     theme variants. */
+  /* Single-wing brand mark painted with currentColor through a CSS mask.
+     ~10 kB lossless WebP. One asset auto-themes for light + dark — the
+     mask alpha defines the shape and currentColor inherits --fg, which
+     flips with [data-theme]. No filter hack, no theme-variant download,
+     no JS needed. */
   background-color: currentColor;
-  -webkit-mask: url("/brand/logo-mark.png") center / contain no-repeat;
-  mask: url("/brand/logo-mark.png") center / contain no-repeat;
+  -webkit-mask: url("/brand/logo-mark.webp") center / contain no-repeat;
+  mask: url("/brand/logo-mark.webp") center / contain no-repeat;
   -webkit-mask-mode: alpha;
   mask-mode: alpha;
 }
@@ -371,25 +372,51 @@
   letter-spacing: -0.005em;
   color: var(--fg);
 }
+#intro .intro-caption span {
+  display: inline-block;
+}
 @media (min-width: 640px) { #intro .intro-caption { font-size: 1.45rem; } }
 @media (min-width: 768px) { #intro .intro-caption { font-size: 1.65rem; } }
 
 /* Full-sequence mode (no reduced motion).
-   Single keyframe per element, opacity + transform only — both composited
-   properties. Per-keyframe animation-timing-function gives a soft ease-in
-   on entry and a different ease-out on exit while the browser still treats
-   it as one animation, which keeps the non-composited audit clean. */
+   Three layers, each driven by exactly one animation per element so the
+   non-composited animation audit stays clean:
+     - .intro-lockup: opacity + transform fade-in / hold / fade-out
+     - .intro-mark:   subtle horizontal arrival of the wing
+     - .intro-caption span: per-letter print-in (opacity + translateY)
+   All animated properties are opacity + transform, both composited. */
 #intro[data-mode="play"] .intro-lockup {
   opacity: 0;
   transform: translate3d(0, 6px, 0) scale(0.985);
   animation: intro-lockup 2.4s 0.1s forwards;
 }
+#intro[data-mode="play"] .intro-mark {
+  transform: translate3d(-10px, 0, 0);
+  animation: intro-mark-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+}
+#intro[data-mode="play"] .intro-caption span {
+  opacity: 0;
+  transform: translate3d(0, 0.35em, 0);
+  animation: intro-letter-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+/* Per-letter stagger: 60 ms apart, last letter fully in by ~1.45 s, well
+   before the lockup begins fading out at 1.85 s. */
+#intro[data-mode="play"] .intro-caption span:nth-child(1) { animation-delay: 0.55s; }
+#intro[data-mode="play"] .intro-caption span:nth-child(2) { animation-delay: 0.61s; }
+#intro[data-mode="play"] .intro-caption span:nth-child(3) { animation-delay: 0.67s; }
+#intro[data-mode="play"] .intro-caption span:nth-child(4) { animation-delay: 0.73s; }
+#intro[data-mode="play"] .intro-caption span:nth-child(5) { animation-delay: 0.79s; }
+#intro[data-mode="play"] .intro-caption span:nth-child(6) { animation-delay: 0.85s; }
+#intro[data-mode="play"] .intro-caption span:nth-child(7) { animation-delay: 0.91s; }
+#intro[data-mode="play"] .intro-caption span:nth-child(8) { animation-delay: 0.97s; }
 #intro[data-mode="play"] {
   animation: intro-overlay-out 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) 1.9s forwards;
 }
 
 /* Reduced-motion mode: no movement, brief soft fade only. */
-#intro[data-mode="reduce"] .intro-lockup {
+#intro[data-mode="reduce"] .intro-lockup,
+#intro[data-mode="reduce"] .intro-mark,
+#intro[data-mode="reduce"] .intro-caption span {
   opacity: 1;
   transform: none;
 }
@@ -408,7 +435,7 @@
     transform: translate3d(0, 0, 0) scale(1);
     animation-timing-function: linear;
   }
-  73% {
+  77% {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
     animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -417,6 +444,12 @@
     opacity: 0;
     transform: translate3d(0, -14px, 0) scale(1);
   }
+}
+@keyframes intro-mark-in {
+  to { transform: translate3d(0, 0, 0); }
+}
+@keyframes intro-letter-in {
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 @keyframes intro-overlay-out {
   to { opacity: 0; }
