@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
-import { sectors } from "../content/site";
 import Disclaimer from "../components/Disclaimer";
 import CTASection from "../components/CTASection";
+import { useDict } from "../lib/i18n";
 import { useSeo } from "../lib/seo";
 
 export default function Sectors() {
+  const t = useDict();
   useSeo({
-    title: "Sectors, Cravelle",
-    description:
-      "Cravelle works in narrow, practical sectors: fruits, vegetables, fresh produce, agricultural products, and selected hospitality commercial partnerships.",
+    title: t.meta.pages.sectors.title,
+    description: t.meta.pages.sectors.description,
     path: "/sectors",
   });
 
@@ -17,23 +17,22 @@ export default function Sectors() {
       <section className="border-b border-[color:var(--rule)] pt-32 md:pt-40">
         <div className="container-edge">
           <div className="flex items-center justify-between font-mono text-[0.7rem] uppercase tracking-[0.2em] text-[color:var(--fg-soft)]">
-            <span>Sectors</span>
-            <span>{sectors.length} categories</span>
+            <span>{t.sectorsPage.indexLabel}</span>
+            <span>
+              {t.sectors.length} {t.sectorsPage.countSuffix}
+            </span>
           </div>
           <div className="hairline-x mt-2" />
-          <h1 className="mt-12 max-w-4xl font-serif text-display-xl">
-            Narrow sectors. Real commercial knowledge.
-          </h1>
+          <h1 className="mt-12 max-w-4xl font-serif text-display-xl">{t.sectorsPage.title}</h1>
           <p className="mt-8 max-w-2xl text-[1.05rem] leading-[1.6] text-[color:var(--fg-soft)]">
-            A small set of categories where Egypt and the wider region have credible supply —
-            and European buyers have real demand.
+            {t.sectorsPage.intro}
           </p>
         </div>
       </section>
 
       <section className="container-edge py-20 md:py-28">
         <ul className="grid gap-px overflow-hidden border-l border-t border-[color:var(--rule)] md:grid-cols-2">
-          {sectors.map((s, i) => (
+          {t.sectors.map((s, i) => (
             <li
               key={s.id}
               className="reveal border-b border-r border-[color:var(--rule)] bg-[color:var(--bg)] p-7 md:p-10 md:last:col-span-2"
@@ -55,11 +54,11 @@ export default function Sectors() {
 
         <div className="mt-14 flex flex-wrap items-center gap-4">
           <Link to="/contact" className="btn-primary">
-            Discuss a sector brief
-            <span aria-hidden>→</span>
+            {t.sectorsPage.primary}
+            <span aria-hidden className="i-arrow">→</span>
           </Link>
           <Link to="/services" className="btn-ghost">
-            See the services
+            {t.sectorsPage.secondary}
           </Link>
         </div>
 

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { servicePillars } from "../content/site";
+import { useDict } from "../lib/i18n";
 import SectionHeader from "./SectionHeader";
 import { IconExport, IconGlass, IconLink } from "./icons";
 
@@ -10,28 +10,25 @@ const pillarIcon = {
 } as const;
 
 export default function ServicePillars() {
+  const t = useDict();
   return (
     <section id="services" className="py-24 md:py-32">
       <SectionHeader
-        index="01 / Services"
-        eyebrow="What we do"
+        index={t.servicesSection.indexLabel}
+        eyebrow={t.servicesSection.eyebrow}
         title={
           <>
-            Three focused services.<br />
-            <span className="text-[color:var(--fg-mute)]">Nothing more.</span>
+            {t.servicesSection.titleLine1}
+            <br />
+            <span className="text-[color:var(--fg-mute)]">{t.servicesSection.titleLine2}</span>
           </>
         }
-        intro={
-          <p>
-            Cravelle is a commercial connector between Arabic-speaking suppliers and the European
-            market. Each service has a defined scope and a clear outcome.
-          </p>
-        }
+        intro={<p>{t.servicesSection.intro}</p>}
       />
 
       <div className="container-edge mt-14">
         <ul className="border-t border-[color:var(--rule)]">
-          {servicePillars.map((p) => {
+          {t.servicePillars.map((p) => {
             const Icon = pillarIcon[p.slug as keyof typeof pillarIcon];
             return (
               <li
@@ -65,14 +62,14 @@ export default function ServicePillars() {
                   </div>
                   <div className="col-span-12 md:col-span-4 md:pl-6">
                     <p className="text-[14px] leading-[1.6] text-[color:var(--fg-soft)]">
-                      <span className="eyebrow mr-2">Outcome</span>
+                      <span className="eyebrow mr-2">{t.servicesSection.outcomeLabel}</span>
                       {p.outcome}
                     </p>
                   </div>
                   <div className="col-span-12 md:col-span-1 md:flex md:justify-end">
                     <span
                       aria-hidden
-                      className="font-mono text-[1.1rem] text-[color:var(--fg-soft)] transition-transform group-hover:translate-x-1"
+                      className="i-arrow font-mono text-[1.1rem] text-[color:var(--fg-soft)] transition-transform group-hover:translate-x-1"
                     >
                       →
                     </span>

@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
+import { LanguageProvider } from "./lib/i18n";
 import { bootRevealOnce } from "./lib/reveal";
 import "./styles/index.css";
 
@@ -21,7 +22,9 @@ const container = document.getElementById("root")!;
 const tree = (
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <LanguageProvider>
+        <App />
+      </LanguageProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

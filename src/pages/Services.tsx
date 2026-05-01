@@ -1,18 +1,18 @@
 import { useEffect } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { servicePillars } from "../content/site";
 import Disclaimer from "../components/Disclaimer";
 import CTASection from "../components/CTASection";
+import { useDict } from "../lib/i18n";
 import { useSeo } from "../lib/seo";
 
 export default function Services() {
+  const t = useDict();
   const { hash } = useLocation();
   const params = useParams();
 
   useSeo({
-    title: "Services, Cravelle",
-    description:
-      "Three focused services from Cravelle: export and market entry support, B2B partnership facilitation, and hospitality and premium supplier sourcing.",
+    title: t.meta.pages.services.title,
+    description: t.meta.pages.services.description,
     path: "/services",
   });
 
@@ -27,28 +27,30 @@ export default function Services() {
     }
   }, [hash, params.slug]);
 
+  const total = t.servicePillars.length;
+
   return (
     <>
       <section className="border-b border-[color:var(--rule)] pt-32 md:pt-40">
         <div className="container-edge">
           <div className="flex items-center justify-between font-mono text-[0.7rem] uppercase tracking-[0.2em] text-[color:var(--fg-soft)]">
-            <span>Index / Services</span>
-            <span>{servicePillars.length} services</span>
+            <span>{t.servicesPage.indexLabel}</span>
+            <span>{total} {t.servicesPage.countSuffix}</span>
           </div>
           <div className="hairline-x mt-2" />
-          <h1 className="mt-12 max-w-4xl font-serif text-display-xl">What Cravelle does.</h1>
+          <h1 className="mt-12 max-w-4xl font-serif text-display-xl">{t.servicesPage.title}</h1>
           <p className="mt-8 max-w-2xl text-[1.05rem] leading-[1.6] text-[color:var(--fg-soft)]">
-            Three defined commercial mandates. Each one with a clear scope and a clear outcome.
+            {t.servicesPage.intro}
           </p>
         </div>
       </section>
 
       <section className="container-edge pt-12">
         <nav
-          aria-label="Service jump menu"
+          aria-label={t.servicesPage.jumpAria}
           className="grid gap-px overflow-hidden border-l border-t border-[color:var(--rule)] md:grid-cols-3"
         >
-          {servicePillars.map((p) => (
+          {t.servicePillars.map((p) => (
             <Link
               key={p.slug}
               to={`#${p.slug}`}
@@ -60,7 +62,7 @@ export default function Services() {
               <span className="text-[14.5px]">{p.shortTitle}</span>
               <span
                 aria-hidden
-                className="ml-auto translate-x-0 font-mono text-[0.9rem] text-[color:var(--fg-soft)] transition-transform group-hover:translate-x-1"
+                className="ms-auto translate-x-0 font-mono text-[0.9rem] text-[color:var(--fg-soft)] transition-transform group-hover:translate-x-1"
               >
                 ↓
               </span>
@@ -71,15 +73,13 @@ export default function Services() {
 
       <div className="container-edge py-20 md:py-28">
         <ol className="flex flex-col gap-20 md:gap-28">
-          {servicePillars.map((p, i) => (
+          {t.servicePillars.map((p, i) => (
             <li key={p.slug} id={p.slug} className="reveal scroll-mt-28">
               <div className="flex items-center justify-between font-mono text-[0.7rem] uppercase tracking-[0.18em] text-[color:var(--fg-soft)]">
                 <span>
                   {p.number} / {p.shortTitle}
                 </span>
-                <span>
-                  {i + 1} of {servicePillars.length}
-                </span>
+                <span>{t.servicesPage.pageOf(i + 1, total)}</span>
               </div>
               <div className="hairline-x mt-2" />
 
@@ -87,14 +87,14 @@ export default function Services() {
                 <div className="md:col-span-6">
                   <h2 className="font-serif text-display-md leading-[1.05]">{p.title}</h2>
                   <p className="mt-6 max-w-prose text-[15px] leading-[1.65] text-[color:var(--fg-soft)]">
-                    <span className="eyebrow mr-2">For</span>
+                    <span className="eyebrow me-2">{t.servicesPage.forLabel}</span>
                     {p.forWhom}
                   </p>
                 </div>
 
                 <div className="md:col-span-6">
-                  <div className="border-l border-[color:var(--rule)] pl-6">
-                    <div className="eyebrow">What we do</div>
+                  <div className="border-s border-[color:var(--rule)] ps-6">
+                    <div className="eyebrow">{t.servicesPage.whatLabel}</div>
                     <ul className="mt-4 grid gap-3">
                       {p.whatWeDo.map((item) => (
                         <li
@@ -107,7 +107,7 @@ export default function Services() {
                       ))}
                     </ul>
                     <div className="mt-8">
-                      <div className="eyebrow">Outcome</div>
+                      <div className="eyebrow">{t.servicesPage.outcomeLabel}</div>
                       <p className="mt-3 text-[15px] leading-[1.6] text-[color:var(--fg)]">
                         {p.outcome}
                       </p>

@@ -1,29 +1,20 @@
-import { processSteps } from "../content/site";
+import { useDict } from "../lib/i18n";
 import SectionHeader from "./SectionHeader";
 
 export default function Process() {
+  const t = useDict();
   return (
     <section className="py-24 md:py-32">
       <SectionHeader
-        index="03 / Method"
-        eyebrow="How we work"
-        title={
-          <>
-            A practical, written, six-step method
-            <span className="text-[color:var(--accent)]">.</span>
-          </>
-        }
-        intro={
-          <p>
-            Every engagement runs through the same written sequence, so both sides see the route,
-            the pace, and where qualified professionals take over.
-          </p>
-        }
+        index={t.processSection.indexLabel}
+        eyebrow={t.processSection.eyebrow}
+        title={t.processSection.title}
+        intro={<p>{t.processSection.intro}</p>}
       />
 
       <div className="container-edge mt-16">
         <ol className="grid gap-x-8 gap-y-10 md:grid-cols-2">
-          {processSteps.map((s) => (
+          {t.processSteps.map((s) => (
             <li key={s.n} className="reveal relative pl-12">
               <span className="absolute left-0 top-1 font-mono text-[0.7rem] tracking-[0.18em] text-[color:var(--brass)]">
                 {s.n}

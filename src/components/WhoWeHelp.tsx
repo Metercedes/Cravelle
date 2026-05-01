@@ -1,4 +1,4 @@
-import { audiences } from "../content/site";
+import { useDict } from "../lib/i18n";
 import SectionHeader from "./SectionHeader";
 import {
   IconBuyers,
@@ -17,28 +17,19 @@ const audienceIcon = {
 } as const;
 
 export default function WhoWeHelp() {
+  const t = useDict();
   return (
     <section className="bg-[color:var(--bg-soft)]/50 py-24 md:py-32">
       <SectionHeader
-        index="02 / Audience"
-        eyebrow="Who we help"
-        title={
-          <>
-            For Arabic-speaking exporters and the European partners who buy from them
-            <span className="text-[color:var(--accent)]">.</span>
-          </>
-        }
-        intro={
-          <p>
-            Cravelle works with companies on either side of the same conversation. The brief is
-            always commercial, written, and specific.
-          </p>
-        }
+        index={t.audienceSection.indexLabel}
+        eyebrow={t.audienceSection.eyebrow}
+        title={t.audienceSection.title}
+        intro={<p>{t.audienceSection.intro}</p>}
       />
 
       <div className="container-edge mt-14">
         <ul className="grid gap-px overflow-hidden border-l border-t border-[color:var(--rule)] sm:grid-cols-2">
-          {audiences.map((a, i) => {
+          {t.audiences.map((a, i) => {
             const Icon = audienceIcon[a.id as keyof typeof audienceIcon];
             return (
               <li

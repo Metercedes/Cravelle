@@ -1,23 +1,17 @@
-// Structured content for Cravelle.
-// Designed so future translations (PL / AR) plug in by mirroring the shape
-// under a locale key without touching component code.
+// Non-translatable site identifiers (company registry, contact endpoints,
+// phone numbers, navigation routes). Translatable copy lives in dict.en.ts /
+// dict.pl.ts / dict.ar.ts and is consumed via the useDict() hook.
 
 export const siteCompany = {
   legalName: "Cravelle Sp. z o.o.",
   legalNameFull: "CRAVELLE SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ",
   brand: "Cravelle",
-  positioning:
-    "Cravelle is the Poland-based B2B bridge connecting Arabic-speaking suppliers, especially Egyptian exporters, with the European market through export support, commercial introductions, and market-entry coordination.",
-  shortPositioning:
-    "The B2B bridge into Europe. Export support, commercial introductions, and market-entry coordination for Arabic-speaking suppliers.",
   address: {
     line1: "ul. Wiślana 8",
     postalCode: "00-317",
     city: "Warszawa",
     country: "Poland",
   },
-  // Public-facing identifiers kept minimal. Full registry data (KRS, REGON,
-  // PKD, e-Doręczenia) lives only on the Legal page.
   registry: {
     nip: "5253079394",
     krs: "0001224084",
@@ -36,234 +30,15 @@ export const siteCompany = {
   formEndpoint: "https://formspree.io/f/xgvralwk",
 } as const;
 
-export type ServicePillar = {
-  number: string;
-  slug: string;
-  title: string;
-  shortTitle: string;
-  forWhom: string;
-  whatWeDo: string[];
-  outcome: string;
-  cta: string;
-};
-
-export const servicePillars: ServicePillar[] = [
-  {
-    number: "01",
-    slug: "export-and-market-entry",
-    title: "Export and Market Entry Support",
-    shortTitle: "Export and Market Entry",
-    forWhom:
-      "Arabic-speaking exporters, especially Egyptian producers, entering Poland or wider Europe.",
-    whatWeDo: [
-      "Market-entry coordination by product or category",
-      "Commercial introductions to qualified European counterparties",
-      "Poland-side representation for meetings and follow-up",
-      "Process guidance through the practical next steps",
-    ],
-    outcome:
-      "A documented entry plan, named counterparties, and a single point of contact in Warsaw.",
-    cta: "Discuss an export opportunity",
-  },
-  {
-    number: "02",
-    slug: "b2b-partnership-facilitation",
-    title: "B2B Partnership Facilitation",
-    shortTitle: "B2B Partnerships",
-    forWhom:
-      "Relationships that need a trusted connector between an Arabic-speaking party and a European buyer or supplier.",
-    whatWeDo: [
-      "Buyer and supplier introductions with written context",
-      "Supplier sourcing inside and outside the EU",
-      "Negotiation and communication support across languages",
-      "Ongoing account coordination once a relationship is live",
-    ],
-    outcome:
-      "A working B2B relationship with a clear cadence and a named coordinator.",
-    cta: "Start a B2B introduction",
-  },
-  {
-    number: "03",
-    slug: "hospitality-and-premium-supplier-sourcing",
-    title: "Hospitality and Premium Supplier Sourcing",
-    shortTitle: "Hospitality Sourcing",
-    forWhom:
-      "Hotels, lounges, restaurants, and selected premium venues that need specialist supplier connections.",
-    whatWeDo: [
-      "Procurement support for defined hospitality categories",
-      "Premium supplier introductions in Europe and beyond",
-      "Commercial partnerships between venues and suppliers",
-      "Training coordination through qualified external trainers",
-    ],
-    outcome:
-      "A short list of vetted suppliers, scheduled introductions, and a structured handover.",
-    cta: "Send a hospitality brief",
-  },
+// Route paths are language-neutral; the visible labels come from the dict.
+export const navRoutes = [
+  { to: "/services", labelKey: "services" as const },
+  { to: "/sectors", labelKey: "sectors" as const },
+  { to: "/about", labelKey: "about" as const },
+  { to: "/contact", labelKey: "contact" as const },
 ];
 
-export const audiences = [
-  {
-    id: "egyptian-exporters",
-    label: "Egyptian exporters",
-    note: "Producers and trading houses ready for Poland and the wider EU.",
-  },
-  {
-    id: "arabic-suppliers",
-    label: "Arabic-speaking suppliers",
-    note: "Suppliers seeking a credible European counterpart.",
-  },
-  {
-    id: "hospitality",
-    label: "Hospitality businesses",
-    note: "Hotels, lounges, restaurants, and venues sourcing specialist suppliers.",
-  },
-  {
-    id: "european-buyers",
-    label: "European buyers",
-    note: "Polish and EU buyers seeking verified supply from Egypt and the wider region.",
-  },
-  {
-    id: "b2b-partners",
-    label: "B2B partners",
-    note: "Companies on either side needing a trusted commercial connector.",
-  },
+export const footerRoutes = [
+  ...navRoutes,
+  { to: "/legal", labelKey: "legal" as const },
 ];
-
-export const sectors = [
-  {
-    id: "fruits",
-    title: "Fruits",
-    note: "Fresh and seasonal fruits suited to European demand, sourced from established producers.",
-  },
-  {
-    id: "vegetables",
-    title: "Vegetables",
-    note: "Fresh vegetables aligned with European retail and wholesale specifications.",
-  },
-  {
-    id: "fresh-produce",
-    title: "Fresh produce",
-    note: "Wider fresh produce categories where buyer and supplier expectations are clear.",
-  },
-  {
-    id: "agricultural-products",
-    title: "Agricultural products",
-    note: "Selected agricultural goods where Egypt and the wider region offer credible supply.",
-  },
-  {
-    id: "hospitality",
-    title: "Hospitality (selected commercial partnerships)",
-    note: "Procurement support and supplier introductions for hotels, lounges, restaurants, and premium venues.",
-  },
-];
-
-export const processSteps = [
-  {
-    n: "01",
-    title: "Understand the opportunity",
-    body: "A short brief, one call, a clear note on success and on scope.",
-  },
-  {
-    n: "02",
-    title: "Verify the commercial direction",
-    body: "We confirm demand, price logic, counterparty profile, and obvious blockers.",
-  },
-  {
-    n: "03",
-    title: "Prepare outreach",
-    body: "Adapted introductions and written context for both sides.",
-  },
-  {
-    n: "04",
-    title: "Connect with the relevant parties",
-    body: "Direct, named introductions with a written context note for both sides.",
-  },
-  {
-    n: "05",
-    title: "Coordinate meetings and follow-up",
-    body: "We run the cadence, the minutes, and the action list.",
-  },
-  {
-    n: "06",
-    title: "Hand off to qualified professionals",
-    body: "When a step needs a lawyer, accountant, or customs agent, we brief them and stay on the thread.",
-  },
-];
-
-export const whyCravelle = {
-  eyebrow: "Why Cravelle",
-  heading:
-    "A focused B2B bridge into Europe, anchored in Poland.",
-  points: [
-    {
-      title: "Bilingual and cross-cultural",
-      body: "English and Arabic. Practical understanding of how Egyptian and European parties transact.",
-    },
-    {
-      title: "Poland-based presence",
-      body: "A real Warsaw address, a named counterpart, in-person follow-up.",
-    },
-    {
-      title: "Practical commercial coordination",
-      body: "Written briefs, named counterparties, a clean record of what was agreed.",
-    },
-    {
-      title: "Real business follow-through",
-      body: "We stay on the thread until the relationship is operating.",
-    },
-    {
-      title: "Focused B2B positioning",
-      body: "One thing: the right product, the right channel, the right people, into Europe.",
-    },
-  ],
-};
-
-export const disclaimerText =
-  "Cravelle provides commercial coordination, introductions, and business support. It does not provide legal, tax, customs, immigration, financial, or investment advice unless delivered through properly qualified external professionals.";
-
-export const navLinks = [
-  { to: "/services", label: "Services" },
-  { to: "/sectors", label: "Sectors" },
-  { to: "/about", label: "About" },
-  { to: "/contact", label: "Contact" },
-];
-
-export const footerLinks = [
-  { to: "/services", label: "Services" },
-  { to: "/sectors", label: "Sectors" },
-  { to: "/about", label: "About" },
-  { to: "/contact", label: "Contact" },
-  { to: "/legal", label: "Legal and disclaimer" },
-];
-
-export const formIntake = {
-  heading: "Talk to Cravelle.",
-  intro:
-    "We reply within two working days. Send written context first so the call is useful for both sides.",
-  fields: {
-    name: "Name",
-    company: "Company",
-    country: "Country",
-    email: "Email",
-    phone: "WhatsApp or phone",
-    businessType: "Business type",
-    productOrSector: "Product or sector",
-    targetMarket: "Target market",
-    message: "Message",
-  },
-  businessTypes: [
-    "Producer or manufacturer",
-    "Exporter",
-    "Importer or distributor",
-    "Trading house",
-    "Hospitality buyer",
-    "Service provider",
-    "Other",
-  ],
-  targetMarkets: [
-    "Poland",
-    "European Union (wider)",
-    "Both Poland and wider EU",
-    "Other",
-  ],
-};

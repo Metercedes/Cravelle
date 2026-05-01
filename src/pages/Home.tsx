@@ -6,13 +6,14 @@ import WhyCravelle from "../components/WhyCravelle";
 import Gallery from "../components/Gallery";
 import CTASection from "../components/CTASection";
 import Disclaimer from "../components/Disclaimer";
+import { useDict } from "../lib/i18n";
 import { useSeo } from "../lib/seo";
 
 export default function Home() {
+  const t = useDict();
   useSeo({
-    title: "Cravelle, the B2B bridge into Europe.",
-    description:
-      "Cravelle is the Poland-based B2B bridge connecting Arabic-speaking suppliers, especially Egyptian exporters, with the European market through export support, commercial introductions, and market-entry coordination.",
+    title: t.meta.pages.home.title,
+    description: t.meta.pages.home.description,
     path: "/",
   });
   return (

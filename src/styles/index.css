@@ -25,9 +25,11 @@
       same layout cleanly on every modern OS.
     */
     --font-serif: ui-serif, "Iowan Old Style", "Apple Garamond", Georgia,
-      Cambria, "Times New Roman", Times, serif;
+      Cambria, "Times New Roman", Times, "Geeza Pro", "Noto Naskh Arabic",
+      "Tahoma", serif;
     --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-      "Helvetica Neue", Arial, sans-serif;
+      "Helvetica Neue", Arial, "Geeza Pro", "Segoe UI Arabic",
+      "Tahoma", sans-serif;
     --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
       "Liberation Mono", monospace;
   }
@@ -305,6 +307,27 @@
     -webkit-mask-mode: alpha;
     mask-mode: alpha;
   }
+
+  /* Inline directional glyphs (→, ←). In RTL contexts the arrow is mirrored
+     with a transform so a single element renders correctly in either
+     direction; keeps every component free of explicit ltr/rtl branches. */
+  .i-arrow {
+    display: inline-block;
+  }
+  [dir="rtl"] .i-arrow {
+    transform: scaleX(-1);
+  }
+  [dir="rtl"] .arrow-after::after {
+    transform: scaleX(-1);
+    display: inline-block;
+  }
+
+  /* Language picker dropdown menu. Z-indexed above the nav row and styled
+     with the brand neutral palette. */
+  .lang-menu {
+    z-index: 60;
+    border-radius: 2px;
+  }
 }
 
 @layer utilities {
@@ -378,6 +401,36 @@
 @media (min-width: 640px) { #intro .intro-caption { font-size: 1.45rem; } }
 @media (min-width: 768px) { #intro .intro-caption { font-size: 1.65rem; } }
 
+/* Progress strip (inspired by prs.ms.gov.pl).
+   A thin track with a swiping accent fill that loops while the brand lockup
+   sits in place. The accent uses transform-only animation so it stays on
+   the compositor, keeping the Lighthouse "non-composited animation" audit
+   green. */
+#intro .intro-progress {
+  display: block;
+  position: relative;
+  margin-top: 0.5rem;
+  width: min(82vw, 360px);
+  height: 3px;
+  overflow: hidden;
+  background: var(--rule-soft);
+  border-radius: 2px;
+  opacity: 0;
+}
+@media (min-width: 640px) { #intro .intro-progress { width: min(60vw, 460px); height: 4px; } }
+@media (min-width: 768px) { #intro .intro-progress { width: min(50vw, 520px); height: 4px; } }
+#intro .intro-progress::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 30%;
+  background: var(--brass);
+  transform: translate3d(-100%, 0, 0);
+  will-change: transform;
+}
+
 /* Full-sequence mode (no reduced motion).
    Three layers, each driven by exactly one animation per element so the
    non-composited animation audit stays clean:
@@ -399,6 +452,12 @@
   transform: translate3d(0, 0.35em, 0);
   animation: intro-letter-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+#intro[data-mode="play"] .intro-progress {
+  animation: intro-progress-fade 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) 1.05s forwards;
+}
+#intro[data-mode="play"] .intro-progress::before {
+  animation: intro-progress-swipe 1.4s cubic-bezier(0.45, 0.05, 0.55, 0.95) 1.2s infinite;
+}
 /* Per-letter stagger: 60 ms apart, last letter fully in by ~1.45 s, well
    before the lockup begins fading out at 1.85 s. */
 #intro[data-mode="play"] .intro-caption span:nth-child(1) { animation-delay: 0.55s; }
@@ -419,6 +478,16 @@
 #intro[data-mode="reduce"] .intro-caption span {
   opacity: 1;
   transform: none;
+}
+#intro[data-mode="reduce"] .intro-progress {
+  opacity: 1;
+}
+#intro[data-mode="reduce"] .intro-progress::before {
+  /* No looping swipe under reduced-motion: a static brass segment indicates
+     the page is loading without any movement. */
+  transform: translate3d(0, 0, 0);
+  width: 100%;
+  opacity: 0.45;
 }
 #intro[data-mode="reduce"] {
   animation: intro-overlay-out 0.4s ease 0.4s forwards;
@@ -453,6 +522,24 @@
 }
 @keyframes intro-overlay-out {
   to { opacity: 0; }
+}
+@keyframes intro-progress-fade {
+  to { opacity: 1; }
+}
+@keyframes intro-progress-swipe {
+  0%   { transform: translate3d(-100%, 0, 0); }
+  60%  { transform: translate3d(220%, 0, 0); }
+  100% { transform: translate3d(360%, 0, 0); }
+}
+/* Mirror the swipe direction in RTL so the strip enters from the right side
+   the way Arabic readers expect motion to flow. */
+[dir="rtl"] #intro[data-mode="play"] .intro-progress::before {
+  animation-name: intro-progress-swipe-rtl;
+}
+@keyframes intro-progress-swipe-rtl {
+  0%   { transform: translate3d(360%, 0, 0); }
+  60%  { transform: translate3d(-40%, 0, 0); }
+  100% { transform: translate3d(-100%, 0, 0); }
 }
 
 /*
